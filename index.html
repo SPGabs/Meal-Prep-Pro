@@ -770,174 +770,188 @@
         }
 
         function renderizarReceitas() {
-            const container = document.getElementById('listaReceitas');
-            const containerFeitas = document.getElementById('listaReceitasFeitas');
-            const sectionFeitas = document.getElementById('receitasFeitasSection');
-            
-            // Receitas ativas (editáveis)
-            container.innerHTML = receitas.map(receita => {
-                const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
-                const custoPorcao = receita.ingredientes.reduce((a, b) => a + b.preco, 0) / (receita.porcoes || 1);
-                const custoTotal = receita.ingredientes.reduce((a, b) => a + b.preco, 0);
-                
-                return `
-                <div class="glass-panel rounded-2xl p-6 card-hover border border-slate-700/50">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="flex-1 mr-4">
-                            <input type="text" value="${nome}" onchange="atualizarReceita(${receita.id}, 'nome', this.value)"
-                                   class="input-field w-full text-lg font-bold bg-transparent border-b border-slate-600 focus:border-amber-400 px-0 py-1 mb-2">
-                            <div class="flex gap-2 flex-wrap">
-                                <select onchange="atualizarReceita(${receita.id}, 'categoria', this.value)"
-                                        class="input-field text-xs px-2 py-1 rounded-lg">
-                                    <option value="Café da Manhã" ${receita.categoria === 'Café da Manhã' ? 'selected' : ''}>Pequeno-almoço</option>
-                                    <option value="Almoço" ${receita.categoria === 'Almoço' ? 'selected' : ''}>Almoço</option>
-                                    <option value="Jantar" ${receita.categoria === 'Jantar' ? 'selected' : ''}>Jantar</option>
-                                    <option value="Lanche" ${receita.categoria === 'Lanche' ? 'selected' : ''}>Lanche</option>
-                                </select>
-                                <div class="flex items-center gap-2 text-sm text-slate-400">
-                                    <i data-lucide="users" class="w-4 h-4"></i>
-                                    <input type="number" value="${receita.porcoes}" min="1"
-                                           onchange="atualizarReceita(${receita.id}, 'porcoes', parseInt(this.value))"
-                                           class="input-field w-16 text-center px-2 py-1 rounded-lg text-xs">
-                                    <span class="text-xs">porções</span>
-                                </div>
-                            </div>
+    const container = document.getElementById('listaReceitas');
+    const containerFeitas = document.getElementById('listaReceitasFeitas');
+    const sectionFeitas = document.getElementById('receitasFeitasSection');
+    
+    // Receitas ativas (editáveis)
+    container.innerHTML = receitas.map(receita => {
+        const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
+        const custoPorcao = receita.ingredientes.reduce((a, b) => a + b.preco, 0) / (receita.porcoes || 1);
+        const custoTotal = receita.ingredientes.reduce((a, b) => a + b.preco, 0);
+        
+        return `
+        <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex-1 mr-2 sm:mr-4 min-w-0">
+                    <input type="text" value="${nome}" onchange="atualizarReceita(${receita.id}, 'nome', this.value)"
+                           class="input-field w-full text-base sm:text-lg font-bold bg-transparent border-b border-slate-600 focus:border-amber-400 px-0 py-1 mb-2 truncate">
+                    <div class="flex gap-2 flex-wrap">
+                        <select onchange="atualizarReceita(${receita.id}, 'categoria', this.value)"
+                                class="input-field text-xs px-2 py-1 rounded-lg">
+                            <option value="Café da Manhã" ${receita.categoria === 'Café da Manhã' ? 'selected' : ''}>Pequeno-almoço</option>
+                            <option value="Almoço" ${receita.categoria === 'Almoço' ? 'selected' : ''}>Almoço</option>
+                            <option value="Jantar" ${receita.categoria === 'Jantar' ? 'selected' : ''}>Jantar</option>
+                            <option value="Lanche" ${receita.categoria === 'Lanche' ? 'selected' : ''}>Lanche</option>
+                        </select>
+                        <div class="flex items-center gap-1 sm:gap-2 text-sm text-slate-400">
+                            <i data-lucide="users" class="w-4 h-4"></i>
+                            <input type="number" value="${receita.porcoes}" min="1"
+                                   onchange="atualizarReceita(${receita.id}, 'porcoes', parseInt(this.value))"
+                                   class="input-field w-12 sm:w-16 text-center px-1 sm:px-2 py-1 rounded-lg text-xs">
+                            <span class="text-xs whitespace-nowrap">porções</span>
                         </div>
-                        <button onclick="removerReceita(${receita.id})" class="delete-btn w-10 h-10 rounded-xl flex items-center justify-center transition-all" title="Eliminar">
-                            <i data-lucide="trash-2" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-
-                    <div class="space-y-3 mb-4">
-                        <div class="flex justify-between text-xs text-slate-500 uppercase tracking-wider mb-2">
-                            <span class="flex-1">Ingrediente</span>
-                            <span class="w-24 text-center">Qtd</span>
-                            <span class="w-20 text-center">Un</span>
-                            <span class="w-36 text-right">Preço</span>
-                            <span class="w-12"></span>
-                        </div>
-                        ${receita.ingredientes.map((ing, idx) => {
-                            const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
-                            return `
-                            <div class="space-y-1">
-                                <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'stockSelect', this.value)"
-                                        class="input-field w-full mb-2 text-xs px-2 py-1 rounded-lg text-emerald-400 border-emerald-400/30">
-                                    <option value="">Do Estoque...</option>
-                                    ${estoque.map(item => {
-                                        const itemNome = idiomaAtual === 'pt' ? item.nome : (item.nomeEn || item.nome);
-                                        const selected = ing.stockId === item.id ? 'selected' : '';
-                                        return `<option value="${item.id}" ${selected}>${itemNome}</option>`;
-                                    }).join('')}
-                                </select>
-                                <div class="flex gap-2 items-center">
-                                    <input type="text" value="${nomeIng}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'nome', this.value)"
-                                           class="input-field flex-1 px-3 py-2 rounded-lg text-sm">
-                                    <input type="number" value="${ing.quantidade}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'quantidade', this.value)"
-                                           class="input-field w-24 px-2 py-2 rounded-lg text-sm text-center">
-                                    <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'unidade', this.value)"
-                                            class="input-field w-20 px-1 py-2 rounded-lg text-sm text-center">
-                                        <option value="g" ${ing.unidade === 'g' ? 'selected' : ''}>g</option>
-                                        <option value="kg" ${ing.unidade === 'kg' ? 'selected' : ''}>kg</option>
-                                        <option value="ml" ${ing.unidade === 'ml' ? 'selected' : ''}>ml</option>
-                                        <option value="un" ${ing.unidade === 'un' ? 'selected' : ''}>un</option>
-                                    </select>
-                                    <div class="relative w-36">
-                                        <span class="absolute left-3 top-2 text-slate-500 text-sm font-medium">${moedas[moedaAtual].simbolo}</span>
-                                        <input type="number" value="${ing.preco.toFixed(2)}" step="0.01" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'preco', this.value)"
-                                               class="input-field input-price w-full pl-8 pr-3 py-2 rounded-lg text-base font-medium text-right">
-                                    </div>
-                                    <button onclick="removerIngrediente(${receita.id}, ${idx})" class="delete-btn w-10 h-10 rounded-xl flex items-center justify-center transition-all" title="Remover">
-                                        <i data-lucide="minus" class="w-5 h-5"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        `}).join('')}
-                    </div>
-
-                    <button onclick="adicionarIngrediente(${receita.id})" class="add-ingredient-btn w-full py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all mb-4">
-                        <i data-lucide="plus" class="w-5 h-5"></i>Adicionar Ingrediente
-                    </button>
-
-                    <div class="flex justify-between items-center pt-4 border-t border-slate-700/50">
-                        <div class="text-sm text-slate-400">
-                            <span class="block text-xs">Custo total previsto</span>
-                            <span class="text-lg font-bold text-emerald-400">${formatarMoeda(custoTotal)}</span>
-                            <span class="text-xs text-slate-500">(${formatarMoeda(custoPorcao)}/porção)</span>
-                        </div>
-                        <button onclick="abrirDoneModal(${receita.id})" class="done-btn px-6 py-2 rounded-xl font-semibold flex items-center gap-2 transition-all">
-                            <i data-lucide="check" class="w-5 h-5"></i>Feito
-                        </button>
                     </div>
                 </div>
-                `;
-            }).join('');
-            
-            // Receitas feitas (visualização apenas + refazer)
-            if (receitasFeitas.filter(r => {
-                const data = new Date(r.data);
-                const hoje = new Date();
-                return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
-            }).length > 0) {
-                
-                const receitasFeitasEsteMes = receitasFeitas.filter(r => {
-                    const data = new Date(r.data);
-                    const hoje = new Date();
-                    return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
-                });
-                
-                sectionFeitas.classList.remove('hidden');
-                containerFeitas.innerHTML = receitasFeitasEsteMes.map(receita => {
-                    const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
-                    const data = new Date(receita.data).toLocaleDateString('pt-PT');
-                    
+                <button onclick="removerReceita(${receita.id})" class="delete-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Eliminar">
+                    <i data-lucide="trash-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 mb-4">
+                <div class="hidden sm:flex justify-between text-xs text-slate-500 uppercase tracking-wider mb-2">
+                    <span class="flex-1">Ingrediente</span>
+                    <span class="w-20 text-center">Qtd</span>
+                    <span class="w-16 text-center">Un</span>
+                    <span class="w-28 text-right">Preço</span>
+                    <span class="w-10"></span>
+                </div>
+                ${receita.ingredientes.map((ing, idx) => {
+                    const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
                     return `
-                    <div class="glass-panel rounded-2xl p-6 card-hover border border-slate-700/50 recipe-done">
-                        <div class="recipe-content">
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-2 mb-1">
-                                        <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5"></i>
-                                        <h4 class="text-lg font-bold text-white">${nome}</h4>
-                                    </div>
-                                    <p class="text-sm text-slate-400">${receita.categoria} • ${receita.porcoesFeitas} porções feitas</p>
-                                    <p class="text-xs text-slate-500 mt-1">Feito em: ${data}</p>
-                                </div>
-                                <button onclick="refazerReceita(${receita.id})" class="redo-btn w-10 h-10 rounded-xl flex items-center justify-center transition-all" title="Refazer">
-                                    <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
-                                </button>
+                    <div class="space-y-2 bg-slate-800/30 rounded-xl p-3 sm:p-0 sm:bg-transparent">
+                        <!-- Select do estoque -->
+                        <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'stockSelect', this.value)"
+                                class="input-field w-full text-xs px-2 py-1.5 rounded-lg text-emerald-400 border-emerald-400/30 sm:mb-2">
+                            <option value="">Do Estoque...</option>
+                            ${estoque.map(item => {
+                                const itemNome = idiomaAtual === 'pt' ? item.nome : (item.nomeEn || item.nome);
+                                const selected = ing.stockId === item.id ? 'selected' : '';
+                                return `<option value="${item.id}" ${selected}>${itemNome}</option>`;
+                            }).join('')}
+                        </select>
+                        
+                        <!-- Grid responsivo dos inputs -->
+                        <div class="grid grid-cols-1 sm:flex sm:flex-row gap-2">
+                            <!-- Nome do ingrediente - ocupa linha inteira no mobile -->
+                            <input type="text" value="${nomeIng}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'nome', this.value)"
+                                   class="input-field w-full sm:flex-1 px-3 py-2 rounded-lg text-sm min-w-0" placeholder="Ingrediente">
+                            
+                            <!-- Qtd, Un e Preço em linha no mobile -->
+                            <div class="flex gap-2">
+                                <input type="number" value="${ing.quantidade}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'quantidade', this.value)"
+                                       class="input-field w-20 sm:w-16 px-2 py-2 rounded-lg text-sm text-center" placeholder="Qtd">
+                                <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'unidade', this.value)"
+                                        class="input-field w-16 px-1 py-2 rounded-lg text-sm text-center">
+                                    <option value="g" ${ing.unidade === 'g' ? 'selected' : ''}>g</option>
+                                    <option value="kg" ${ing.unidade === 'kg' ? 'selected' : ''}>kg</option>
+                                    <option value="ml" ${ing.unidade === 'ml' ? 'selected' : ''}>ml</option>
+                                    <option value="un" ${ing.unidade === 'un' ? 'selected' : ''}>un</option>
+                                </select>
                             </div>
                             
-                            <div class="cost-display rounded-xl p-4 mb-3">
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm text-slate-300">Custo real:</span>
-                                    <span class="text-2xl font-bold text-emerald-400">${formatarMoeda(receita.custoReal)}</span>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-slate-400">Por porção:</span>
-                                    <span class="text-emerald-300 font-medium">${formatarMoeda(receita.custoPorcaoReal)}</span>
-                                </div>
+                            <!-- Preço -->
+                            <div class="relative w-full sm:w-28">
+                                <span class="absolute left-3 top-2 text-slate-500 text-sm font-medium">${moedas[moedaAtual].simbolo}</span>
+                                <input type="number" value="${ing.preco.toFixed(2)}" step="0.01" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'preco', this.value)"
+                                       class="input-field w-full pl-8 pr-3 py-2 rounded-lg text-sm font-medium text-right" placeholder="0,00">
                             </div>
                             
-                            <div class="text-xs text-slate-500">
-                                <p class="font-medium mb-1">Ingredientes usados:</p>
-                                <ul class="space-y-1 ml-2">
-                                    ${receita.ingredientes.map(ing => {
-                                        const qtdUsada = ing.quantidade * (receita.porcoesFeitas / receita.porcoes);
-                                        const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
-                                        return `<li>• ${nomeIng}: ${qtdUsada.toFixed(0)}${ing.unidade}</li>`;
-                                    }).join('')}
-                                </ul>
-                            </div>
+                            <!-- Botão remover -->
+                            <button onclick="removerIngrediente(${receita.id}, ${idx})" class="delete-btn w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 sm:w-10" title="Remover">
+                                <i data-lucide="minus" class="w-5 h-5"></i>
+                            </button>
                         </div>
                     </div>
-                    `;
-                }).join('');
-            } else {
-                sectionFeitas.classList.add('hidden');
-            }
+                `}).join('')}
+            </div>
+
+            <button onclick="adicionarIngrediente(${receita.id})" class="add-ingredient-btn w-full py-2.5 sm:py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all mb-4 text-sm sm:text-base">
+                <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>Adicionar Ingrediente
+            </button>
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-4 border-t border-slate-700/50 gap-3">
+                <div class="text-sm text-slate-400">
+                    <span class="block text-xs">Custo total previsto</span>
+                    <span class="text-lg font-bold text-emerald-400">${formatarMoeda(custoTotal)}</span>
+                    <span class="text-xs text-slate-500">(${formatarMoeda(custoPorcao)}/porção)</span>
+                </div>
+                <button onclick="abrirDoneModal(${receita.id})" class="done-btn px-4 sm:px-6 py-2 rounded-xl font-semibold flex items-center gap-2 transition-all w-full sm:w-auto justify-center">
+                    <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5"></i>Feito
+                </button>
+            </div>
+        </div>
+        `;
+    }).join('');
+    
+    // ... resto da função permanece igual (receitas feitas)
+    
+    // Receitas feitas (visualização apenas + refazer)
+    if (receitasFeitas.filter(r => {
+        const data = new Date(r.data);
+        const hoje = new Date();
+        return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
+    }).length > 0) {
+        
+        const receitasFeitasEsteMes = receitasFeitas.filter(r => {
+            const data = new Date(r.data);
+            const hoje = new Date();
+            return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
+        });
+        
+        sectionFeitas.classList.remove('hidden');
+        containerFeitas.innerHTML = receitasFeitasEsteMes.map(receita => {
+            const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
+            const data = new Date(receita.data).toLocaleDateString('pt-PT');
             
-            lucide.createIcons();
-        }
+            return `
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50 recipe-done">
+                <div class="recipe-content">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i>
+                                <h4 class="text-base sm:text-lg font-bold text-white truncate">${nome}</h4>
+                            </div>
+                            <p class="text-sm text-slate-400">${receita.categoria} • ${receita.porcoesFeitas} porções feitas</p>
+                            <p class="text-xs text-slate-500 mt-1">Feito em: ${data}</p>
+                        </div>
+                        <button onclick="refazerReceita(${receita.id})" class="redo-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Refazer">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="cost-display rounded-xl p-3 sm:p-4 mb-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-slate-300">Custo real:</span>
+                            <span class="text-xl sm:text-2xl font-bold text-emerald-400">${formatarMoeda(receita.custoReal)}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-400">Por porção:</span>
+                            <span class="text-emerald-300 font-medium">${formatarMoeda(receita.custoPorcaoReal)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-slate-500">
+                        <p class="font-medium mb-1">Ingredientes usados:</p>
+                        <ul class="space-y-1 ml-2">
+                            ${receita.ingredientes.map(ing => {
+                                const qtdUsada = ing.quantidade * (receita.porcoesFeitas / receita.porcoes);
+                                const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                                return `<li>• ${nomeIng}: ${qtdUsada.toFixed(0)}${ing.unidade}</li>`;
+                            }).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            `;
+        }).join('');
+    } else {
+        sectionFeitas.classList.add('hidden');
+    }
+    
+    lucide.createIcons();
+}
 
         // ESTOQUE
         function adicionarItemEstoque() {
