@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Prep Pro - Controle Total</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* CSS será incluído aqui ou linkado */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ef4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(251, 191, 36, 0.2);
+        }
+        .input-field {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            transition: all 0.3s;
+        }
+        .input-field:focus {
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+            outline: none;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .currency-selector, .language-selector {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        .tab-btn {
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        @media (min-width: 640px) {
+            .tab-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+        .tab-btn:hover {
+            color: #e2e8f0;
+        }
+        .tab-active {
+            color: #fbbf24 !important;
+            background: rgba(30, 41, 59, 0.5);
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
+            border-left: 1px solid rgba(148, 163, 184, 0.2);
+            border-right: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .action-btn {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            color: #fbbf24;
+        }
+        .delete-btn {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(225, 29, 72, 0.15) 100%);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            color: #f43f5e;
+        }
+        .add-ingredient-btn {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+        }
+        .done-btn {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+        }
+        .redo-btn {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+
+    <!-- Modal de Aviso de Idioma -->
+    <div id="languageWarningModal" class="hidden fixed inset-0 z-[100] modal-overlay flex items-center justify-center p-4">
+        <div class="modal-content rounded-2xl p-6 max-w-md w-full shadow-2xl shadow-amber-500/20">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-full bg-amber-400/20 flex items-center justify-center">
+                    <i data-lucide="alert-triangle" class="text-amber-400 w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold font-display text-white">Atenção</h3>
+            </div>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+                Ao mudar o idioma, os nomes das receitas e ingredientes serão alternados entre as versões guardadas.
+            </p>
+            <div class="flex gap-3">
+                <button onclick="cancelLanguageChange()" class="flex-1 py-3 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors font-medium">Cancelar</button>
+                <button onclick="confirmLanguageChange()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 font-bold hover:shadow-lg hover:shadow-amber-500/25 transition-all">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Marcar como Feito -->
+    <div id="doneModal" class="hidden fixed inset-0 z-[100] modal-overlay flex items-center justify-center p-4">
+        <div class="modal-content rounded-2xl p-6 max-w-md w-full shadow-2xl shadow-blue-500/20">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-full bg-blue-400/20 flex items-center justify-center">
+                    <i data-lucide="check-circle" class="text-blue-400 w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold font-display text-white">Marcar como Feito</h3>
+            </div>
+            <p class="text-slate-300 mb-4" id="doneRecipeName">Receita</p>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-slate-300 mb-2">Quantas porções preparou?</label>
+                <input type="number" id="donePortions" value="1" min="1" class="input-field w-full px-4 py-3 rounded-xl text-white text-lg">
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeDoneModal()" class="flex-1 py-3 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700 transition-colors font-medium">Cancelar</button>
+                <button onclick="confirmDone()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold hover:shadow-lg hover:shadow-blue-500/25 transition-all">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+            <div class="flex items-center justify-between gap-2">
+                <!-- Logo e Título -->
+                <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink-0">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/20 flex-shrink-0">
+                        <i data-lucide="chef-hat" class="text-slate-900 w-5 h-5 sm:w-6 sm:h-6"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h1 class="text-lg sm:text-2xl font-bold font-display gradient-text truncate">Meal Prep Pro</h1>
+                        <p class="text-[10px] sm:text-xs text-slate-400 hidden sm:block">Controlo Financeiro & Nutricional</p>
+                    </div>
+                </div>
+                
+                <!-- Botões de Ação -->
+                <div class="flex items-center gap-1 sm:gap-3 flex-shrink-0">
+                    <!-- Idioma -->
+                    <div class="relative">
+                        <button onclick="toggleLanguageMenu()" class="language-selector px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl flex items-center gap-1 sm:gap-2 text-amber-400 font-medium hover:bg-amber-400/20 transition-all text-xs sm:text-sm">
+                            <span id="currentLanguageFlag" class="language-flag text-base sm:text-lg">🇵🇹</span>
+                            <span id="currentLanguageCode" class="hidden sm:inline">PT</span>
+                            <i data-lucide="globe" class="w-3 h-3 sm:w-4 sm:h-4"></i>
+                        </button>
+                        <div id="languageMenu" class="hidden absolute right-0 mt-2 w-36 sm:w-40 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                            <button onclick="prepareLanguageChange('pt')" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-left hover:bg-slate-700 flex items-center gap-2 transition-colors bg-slate-700/50 text-xs sm:text-sm">
+                                <span class="language-flag">🇵🇹</span> Português
+                            </button>
+                            <button onclick="prepareLanguageChange('en')" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-left hover:bg-slate-700 flex items-center gap-2 transition-colors text-xs sm:text-sm">
+                                <span class="language-flag">🇬🇧</span> English
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Moeda -->
+                    <div class="relative">
+                        <button onclick="toggleCurrencyMenu()" class="currency-selector px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl flex items-center gap-1 sm:gap-2 text-amber-400 font-medium hover:bg-amber-400/20 transition-all text-xs sm:text-sm">
+                            <span id="currentCurrencyFlag" class="currency-flag text-base sm:text-lg">🇪🇺</span>
+                            <span id="currentCurrencyCode" class="hidden sm:inline">EUR</span>
+                            <i data-lucide="chevron-down" class="w-3 h-3 sm:w-4 sm:h-4"></i>
+                        </button>
+                        <div id="currencyMenu" class="hidden absolute right-0 mt-2 w-40 sm:w-48 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                            <button onclick="changeCurrency('EUR')" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-left hover:bg-slate-700 flex items-center gap-2 transition-colors bg-slate-700/50 text-xs sm:text-sm">
+                                <span class="currency-flag">🇪🇺</span> <span class="hidden sm:inline">Euro (€)</span><span class="sm:hidden">EUR</span>
+                            </button>
+                            <button onclick="changeCurrency('BRL')" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-left hover:bg-slate-700 flex items-center gap-2 transition-colors text-xs sm:text-sm">
+                                <span class="currency-flag">🇧🇷</span> <span class="hidden sm:inline">Real (R$)</span><span class="sm:hidden">BRL</span>
+                            </button>
+                            <button onclick="changeCurrency('USD')" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-left hover:bg-slate-700 flex items-center gap-2 transition-colors text-xs sm:text-sm">
+                                <span class="currency-flag">🇺🇸</span> <span class="hidden sm:inline">Dollar ($)</span><span class="sm:hidden">USD</span>
+                            </button>
+                            <button onclick="changeCurrency('GBP')" class="w-full px-3 sm:px-4 py-2 sm:py-3 text-left hover:bg-slate-700 flex items-center gap-2 transition-colors text-xs sm:text-sm">
+                                <span class="currency-flag">🇬🇧</span> <span class="hidden sm:inline">Pound (£)</span><span class="sm:hidden">GBP</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Reset -->
+                    <button onclick="resetData()" class="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1 sm:gap-2 p-1.5 sm:px-2 sm:py-2 rounded-lg hover:bg-slate-800">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 sm:w-4 sm:h-4"></i>
+                        <span class="hidden sm:inline text-sm">Reiniciar</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Subtítulo mobile -->
+            <p class="text-[10px] text-slate-400 sm:hidden mt-1 ml-10">Controlo Financeiro & Nutricional</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- ==================== CONFIGURAÇÃO ==================== -->
+        <section class="glass-panel rounded-2xl p-6 card-hover">
+            <div class="flex items-center gap-3 mb-6">
+                <i data-lucide="settings" class="text-amber-400 w-6 h-6"></i>
+                <h2 class="text-xl font-bold font-display">Configuração do Mês</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Dias de preparo</label>
+                    <input type="number" id="diasPrep" value="20" min="1" max="31" class="input-field w-full px-4 py-3 rounded-xl text-white" onchange="calcularTudo()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Refeições por dia</label>
+                    <select id="refeicoesDia" class="input-field w-full px-4 py-3 rounded-xl text-white" onchange="calcularTudo()">
+                        <option value="1">1</option>
+                        <option value="2" selected>2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Pessoas</label>
+                    <input type="number" id="pessoas" value="1" min="1" class="input-field w-full px-4 py-3 rounded-xl text-white" onchange="calcularTudo()">
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== DASHBOARD ==================== -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-amber-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Custo Total Planeado</p>
+                <p class="text-xl sm:text-3xl font-bold text-white" id="custoTotal">€ 0,00</p>
+            </div>
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-emerald-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Custo por Marmita</p>
+                <p class="text-xl sm:text-3xl font-bold text-emerald-400" id="custoUnidade">€ 0,00</p>
+            </div>
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-blue-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Total de Marmitas</p>
+                <p class="text-xl sm:text-3xl font-bold text-blue-400" id="totalMarmitas">0</p>
+            </div>
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-purple-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Peso Total</p>
+                <p class="text-xl sm:text-3xl font-bold text-purple-400" id="pesoTotal">0 kg</p>
+            </div>
+        </section>
+
+        <!-- ==================== ABAS DE NAVEGAÇÃO ==================== -->
+        <div class="flex gap-1 sm:gap-2 border-b border-slate-700 pb-1 overflow-x-auto scrollbar-hide">
+            <button onclick="switchTab('receitas')" id="tab-receitas" class="tab-btn tab-active">
+                <i data-lucide="book-open" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Ementa</span>
+            </button>
+            <button onclick="switchTab('estoque')" id="tab-estoque" class="tab-btn">
+                <i data-lucide="package" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Estoque</span>
+            </button>
+            <button onclick="switchTab('compras')" id="tab-compras" class="tab-btn">
+                <i data-lucide="shopping-cart" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Compras</span>
+            </button>
+            <button onclick="switchTab('analise')" id="tab-analise" class="tab-btn">
+                <i data-lucide="pie-chart" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Análise</span>
+            </button>
+            <button onclick="switchTab('historico')" id="tab-historico" class="tab-btn">
+                <i data-lucide="history" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Histórico</span>
+            </button>
+            <button onclick="switchTab('dados')" id="tab-dados" class="tab-btn">
+                <i data-lucide="database" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Dados</span>
+            </button>
+        </div>
+
+        <!-- ==================== CONTEÚDO: RECEITAS ==================== -->
+        <div id="content-receitas" class="tab-content animate-fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold font-display">As suas Receitas</h3>
+                <button onclick="adicionarReceita()" class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center gap-2 text-sm sm:text-base">
+                    <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="hidden sm:inline">Nova Receita</span><span class="sm:hidden">Nova</span>
+                </button>
+            </div>
+            <div id="listaReceitas" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"></div>
+            
+            <div id="receitasFeitasSection" class="hidden">
+                <h3 class="text-xl font-bold font-display mb-4 flex items-center gap-2 text-emerald-400">
+                    <i data-lucide="check-circle" class="w-6 h-6"></i>Receitas Feitas este Mês
+                </h3>
+                <div id="listaReceitasFeitas" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+            </div>
+        </div>
+
+        <!-- ==================== CONTEÚDO: ESTOQUE ==================== -->
+        <div id="content-estoque" class="tab-content hidden animate-fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold font-display">O seu Estoque</h3>
+                <button onclick="adicionarItemEstoque()" class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center gap-2 text-sm sm:text-base">
+                    <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="hidden sm:inline">Adicionar Item</span><span class="sm:hidden">Adicionar</span>
+                </button>
+            </div>
+            <div id="stockAlerts" class="mb-6 space-y-2"></div>
+            <div id="listaEstoque" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+
+        <!-- ==================== CONTEÚDO: COMPRAS ==================== -->
+        <div id="content-compras" class="tab-content hidden animate-fade-in">
+            <div class="glass-panel rounded-2xl p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold font-display">Lista de Compras</h3>
+                    <button onclick="imprimirLista()" class="text-amber-400 hover:text-amber-300 flex items-center gap-2 text-sm sm:text-base">
+                        <i data-lucide="printer" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="hidden sm:inline">Imprimir</span>
+                    </button>
+                </div>
+                <div id="listaCompras" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- ==================== CONTEÚDO: ANÁLISE ==================== -->
+        <div id="content-analise" class="tab-content hidden animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass-panel rounded-2xl p-6">
+                    <h3 class="text-xl font-bold font-display mb-6 flex items-center gap-2">
+                        <i data-lucide="utensils" class="text-amber-400 w-6 h-6"></i>Custo por Tipo de Refeição
+                    </h3>
+                    <div id="breakdownRefeicoes" class="space-y-4"></div>
+                </div>
+                <div class="glass-panel rounded-2xl p-6">
+                    <h3 class="text-xl font-bold font-display mb-4">Distribuição de Custos</h3>
+                    <div id="graficoCustos" class="space-y-4"></div>
+                    <div class="mt-6 p-4 bg-slate-800/50 rounded-xl border border-slate-700">
+                        <h4 class="text-sm font-medium text-slate-300 mb-3">Resumo</h4>
+                        <div id="resumoCustos" class="space-y-2 text-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CONTEÚDO: HISTÓRICO ==================== -->
+        <div id="content-historico" class="tab-content hidden animate-fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold font-display">Histórico de Receitas</h3>
+                <select id="historyMonth" onchange="renderizarHistorico()" class="input-field px-4 py-2 rounded-xl text-white text-sm">
+                    <option value="">Selecionar mês...</option>
+                </select>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
+                <div class="glass-panel rounded-xl p-4 border-l-4 border-emerald-400">
+                    <p class="text-slate-400 text-xs">Receitas Feitas</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histTotalRecipes">0</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border-l-4 border-amber-400">
+                    <p class="text-slate-400 text-xs">Total Gasto</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histTotalSpent">€ 0,00</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border-l-4 border-blue-400">
+                    <p class="text-slate-400 text-xs">Porções Feitas</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histTotalPortions">0</p>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border-l-4 border-purple-400">
+                    <p class="text-slate-400 text-xs">Custo Médio/Porção</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histAvgCost">€ 0,00</p>
+                </div>
+            </div>
+            
+            <div class="glass-panel rounded-2xl p-6 mb-6">
+                <h4 class="text-lg font-bold font-display mb-4">Gasto por Categoria</h4>
+                <div id="historicoCategorias" class="space-y-3"></div>
+            </div>
+            
+            <div id="listaHistorico" class="space-y-4"></div>
+        </div>
+
+        <!-- ==================== CONTEÚDO: DADOS ==================== -->
+        <div id="content-dados" class="tab-content hidden animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel rounded-2xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold font-display mb-4">Exportar</h3>
+                    <button onclick="exportarDados()" class="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-all">
+                        <i data-lucide="file-json" class="w-5 h-5"></i>Descarregar
+                    </button>
+                </div>
+                <div class="glass-panel rounded-2xl p-6 border border-slate-700">
+                    <h3 class="text-xl font-bold font-display mb-4">Importar</h3>
+                    <label class="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-all cursor-pointer">
+                        <i data-lucide="file-up" class="w-5 h-5"></i>Carregar
+                        <input type="file" id="importFile" accept=".json" onchange="importarDados(this)" class="hidden">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ==================== CONFIGURAÇÕES ====================
+        const moedas = {
+            'EUR': { simbolo: '€', flag: '🇪🇺', posicao: 'depois', locale: 'pt-PT' },
+            'BRL': { simbolo: 'R$', flag: '🇧🇷', posicao: 'antes', locale: 'pt-BR' },
+            'USD': { simbolo: '$', flag: '🇺🇸', posicao: 'antes', locale: 'en-US' },
+            'GBP': { simbolo: '£', flag: '🇬🇧', posicao: 'antes', locale: 'en-GB' }
+        };
+
+        let idiomaAtual = 'pt';
+        let moedaAtual = 'EUR';
+        let pendingLanguageChange = null;
+        let currentDoneRecipeId = null;
+
+        // ==================== ESTADO ====================
+        let receitas = [];
+        let receitasFeitas = [];
+        let estoque = [];
+        let categoriasEstoque = ['Grãos', 'Legumes', 'Frutas', 'Carnes', 'Peixes', 'Laticínios', 'Ovos', 'Massas', 'Arroz', 'Feijão', 'Temperos', 'Óleos', 'Outros'];
+
+        // ==================== INICIALIZAÇÃO ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            inicializarDadosExemplo();
+            updateLanguageDisplay();
+            updateCurrencyDisplay();
+            renderizarTudo();
+            
+            // Fechar menus ao clicar fora
+            document.addEventListener('click', (e) => {
+                const languageBtn = e.target.closest('.language-selector');
+                const currencyBtn = e.target.closest('.currency-selector');
+                const languageMenu = document.getElementById('languageMenu');
+                const currencyMenu = document.getElementById('currencyMenu');
+                
+                if (!languageBtn && languageMenu && !languageMenu.contains(e.target)) {
+                    languageMenu.classList.add('hidden');
+                }
+                
+                if (!currencyBtn && currencyMenu && !currencyMenu.contains(e.target)) {
+                    currencyMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        function inicializarDadosExemplo() {
+            estoque = [
+                { id: 1, nome: 'Massa Penne', nomeEn: 'Penne Pasta', categoria: 'Massas', quantidade: 5000, unidade: 'g', precoTotal: 3.50, precoUnitario: 0.70, validade: '2024-12-31', minimo: 1000 },
+                { id: 2, nome: 'Peito de Frango', nomeEn: 'Chicken Breast', categoria: 'Carnes', quantidade: 2000, unidade: 'g', precoTotal: 12.00, precoUnitario: 6.00, validade: '2024-03-20', minimo: 500 }
+            ];
+
+            receitas = [
+                {
+                    id: 1,
+                    nome: 'Frango com Massa',
+                    nomeEn: 'Chicken Pasta',
+                    categoria: 'Almoço',
+                    porcoes: 4,
+                    ingredientes: [
+                        { nome: 'Peito de Frango', nomeEn: 'Chicken Breast', quantidade: 800, unidade: 'g', preco: 4.80, fromStock: true, stockId: 2 },
+                        { nome: 'Massa Penne', nomeEn: 'Penne Pasta', quantidade: 400, unidade: 'g', preco: 0.28, fromStock: true, stockId: 1 }
+                    ],
+                    feito: false
+                }
+            ];
+        }
+
+        // ==================== IDIOMA E MOEDA ====================
+        function toggleLanguageMenu() {
+            const menu = document.getElementById('languageMenu');
+            const currencyMenu = document.getElementById('currencyMenu');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                if (currencyMenu) currencyMenu.classList.add('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        function toggleCurrencyMenu() {
+            const menu = document.getElementById('currencyMenu');
+            const languageMenu = document.getElementById('languageMenu');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                if (languageMenu) languageMenu.classList.add('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        function prepareLanguageChange(codigo) {
+            if (codigo === idiomaAtual) {
+                document.getElementById('languageMenu').classList.add('hidden');
+                return;
+            }
+            pendingLanguageChange = codigo;
+            document.getElementById('languageWarningModal').classList.remove('hidden');
+            document.getElementById('languageMenu').classList.add('hidden');
+        }
+
+        function cancelLanguageChange() {
+            document.getElementById('languageWarningModal').classList.add('hidden');
+            pendingLanguageChange = null;
+        }
+
+        function confirmLanguageChange() {
+            if (pendingLanguageChange) {
+                idiomaAtual = pendingLanguageChange;
+                updateLanguageDisplay();
+                renderizarTudo();
+            }
+            document.getElementById('languageWarningModal').classList.add('hidden');
+            pendingLanguageChange = null;
+        }
+
+        function changeCurrency(codigo) {
+            moedaAtual = codigo;
+            updateCurrencyDisplay();
+            document.getElementById('currencyMenu').classList.add('hidden');
+            calcularTudo();
+            renderizarTudo();
+        }
+
+        function updateLanguageDisplay() {
+            const flagEl = document.getElementById('currentLanguageFlag');
+            const codeEl = document.getElementById('currentLanguageCode');
+            
+            if (flagEl) flagEl.textContent = idiomaAtual === 'pt' ? '🇵🇹' : '🇬🇧';
+            if (codeEl) codeEl.textContent = idiomaAtual.toUpperCase();
+        }
+
+        function updateCurrencyDisplay() {
+            const moeda = moedas[moedaAtual];
+            const flagEl = document.getElementById('currentCurrencyFlag');
+            const codeEl = document.getElementById('currentCurrencyCode');
+            
+            if (flagEl) flagEl.textContent = moeda.flag;
+            if (codeEl) codeEl.textContent = moedaAtual;
+        }
+
+        function formatarMoeda(valor) {
+            const moeda = moedas[moedaAtual];
+            const valorFormatado = valor.toLocaleString(moeda.locale, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            return moeda.posicao === 'antes' ? `${moeda.simbolo} ${valorFormatado}` : `${valorFormatado} ${moeda.simbolo}`;
+        }
+
+        // ==================== NAVEGAÇÃO DE ABAS ====================
+        function switchTab(tabName) {
+            const tabs = ['receitas', 'estoque', 'compras', 'analise', 'historico', 'dados'];
+            
+            // Esconder todos os conteúdos
+            tabs.forEach(t => {
+                const content = document.getElementById(`content-${t}`);
+                if (content) content.classList.add('hidden');
+            });
+            
+            // Mostrar conteúdo selecionado
+            const selectedContent = document.getElementById(`content-${tabName}`);
+            if (selectedContent) selectedContent.classList.remove('hidden');
+            
+            // Resetar todas as abas
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (btn) {
+                    btn.classList.remove('tab-active');
+                }
+            });
+            
+            // Ativar aba selecionada
+            const selectedBtn = document.getElementById(`tab-${tabName}`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('tab-active');
+            }
+            
+            // Renderizar conteúdo específico
+            if (tabName === 'estoque') renderizarEstoque();
+            if (tabName === 'analise') gerarAnalise();
+            if (tabName === 'historico') renderizarHistorico();
+            
+            // Recriar ícones
+            lucide.createIcons();
+        }
+
+        // ==================== RECEITAS ====================
+        function renderizarTudo() {
+            renderizarReceitas();
+            calcularTudo();
+        }
+
+        function adicionarReceita() {
+            const novaReceita = {
+                id: Date.now(),
+                nome: idiomaAtual === 'pt' ? "Nova Receita" : "New Recipe",
+                nomeEn: "New Recipe",
+                categoria: 'Almoço',
+                porcoes: 1,
+                ingredientes: [],
+                feito: false
+            };
+            receitas.push(novaReceita);
+            renderizarReceitas();
+        }
+
+        function removerReceita(id) {
+            receitas = receitas.filter(r => r.id !== id);
+            renderizarReceitas();
+            calcularTudo();
+        }
+
+        function adicionarIngrediente(receitaId) {
+            const receita = receitas.find(r => r.id === receitaId);
+            const novoIngrediente = {
+                nome: '',
+                nomeEn: '',
+                quantidade: 100,
+                unidade: 'g',
+                preco: 0,
+                fromStock: false,
+                stockId: null
+            };
+            receita.ingredientes.push(novoIngrediente);
+            renderizarReceitas();
+        }
+
+        function removerIngrediente(receitaId, index) {
+            const receita = receitas.find(r => r.id === receitaId);
+            receita.ingredientes.splice(index, 1);
+            renderizarReceitas();
+            calcularTudo();
+        }
+
+        function atualizarReceita(id, campo, valor) {
+            const receita = receitas.find(r => r.id === id);
+            receita[campo] = valor;
+            if (campo === 'nome' && idiomaAtual === 'pt') receita.nome = valor;
+            if (campo === 'nome' && idiomaAtual === 'en') receita.nomeEn = valor;
+            calcularTudo();
+        }
+
+        function atualizarIngrediente(receitaId, index, campo, valor) {
+            const receita = receitas.find(r => r.id === receitaId);
+            const ing = receita.ingredientes[index];
+            
+            if (campo === 'stockSelect' && valor) {
+                const stockItem = estoque.find(e => e.id == valor);
+                if (stockItem) {
+                    ing.fromStock = true;
+                    ing.stockId = stockItem.id;
+                    ing.nome = stockItem.nome;
+                    ing.nomeEn = stockItem.nomeEn;
+                    ing.unidade = stockItem.unidade === 'kg' ? 'g' : stockItem.unidade;
+                    ing.preco = stockItem.precoUnitario * (ing.quantidade / 1000);
+                }
+            } else if (campo === 'nome') {
+                if (idiomaAtual === 'pt') ing.nome = valor;
+                else ing.nomeEn = valor;
+                ing.fromStock = false;
+                ing.stockId = null;
+            } else if (campo === 'quantidade' || campo === 'preco') {
+                ing[campo] = parseFloat(valor) || 0;
+            } else {
+                ing[campo] = valor;
+            }
+            
+            calcularTudo();
+        }
+
+        function abrirDoneModal(receitaId) {
+            currentDoneRecipeId = receitaId;
+            const receita = receitas.find(r => r.id === receitaId);
+            document.getElementById('doneRecipeName').textContent = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
+            document.getElementById('donePortions').value = receita.porcoes;
+            document.getElementById('doneModal').classList.remove('hidden');
+        }
+
+        function closeDoneModal() {
+            document.getElementById('doneModal').classList.add('hidden');
+            currentDoneRecipeId = null;
+        }
+
+        function confirmDone() {
+            if (!currentDoneRecipeId) return;
+            
+            const receitaIndex = receitas.findIndex(r => r.id === currentDoneRecipeId);
+            if (receitaIndex === -1) return;
+            
+            const receita = receitas[receitaIndex];
+            const porcoes = parseInt(document.getElementById('donePortions').value) || 1;
+            
+            // Descontar do estoque
+            receita.ingredientes.forEach(ing => {
+                if (ing.fromStock && ing.stockId) {
+                    const stockItem = estoque.find(e => e.id === ing.stockId);
+                    if (stockItem) {
+                        const qtdUsada = ing.quantidade * (porcoes / receita.porcoes);
+                        stockItem.quantidade = Math.max(0, stockItem.quantidade - qtdUsada);
+                    }
+                }
+            });
+            
+            const custoReal = receita.ingredientes.reduce((a, b) => a + (b.preco * (porcoes / receita.porcoes)), 0);
+            
+            const receitaFeita = {
+                ...receita,
+                data: new Date().toISOString(),
+                porcoesFeitas: porcoes,
+                custoReal: custoReal,
+                custoPorcaoReal: custoReal / porcoes
+            };
+            
+            receitasFeitas.push(receitaFeita);
+            receitas.splice(receitaIndex, 1);
+            
+            closeDoneModal();
+            renderizarTudo();
+        }
+
+        function refazerReceita(receitaFeitaId) {
+            const receitaFeita = receitasFeitas.find(r => r.id === receitaFeitaId);
+            if (!receitaFeita) return;
+            
+            const novaReceita = {
+                id: Date.now(),
+                nome: receitaFeita.nome,
+                nomeEn: receitaFeita.nomeEn,
+                categoria: receitaFeita.categoria,
+                porcoes: receitaFeita.porcoes,
+                ingredientes: receitaFeita.ingredientes.map(ing => ({
+                    ...ing,
+                    fromStock: false,
+                    stockId: null
+                })),
+                feito: false
+            };
+            
+            receitas.push(novaReceita);
+            renderizarReceitas();
+        }
+
+        function renderizarReceitas() {
+            const container = document.getElementById('listaReceitas');
+            const containerFeitas = document.getElementById('listaReceitasFeitas');
+            const sectionFeitas = document.getElementById('receitasFeitasSection');
+            
+            container.innerHTML = receitas.map(receita => {
+                const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
+                const custoPorcao = receita.ingredientes.reduce((a, b) => a + b.preco, 0) / (receita.porcoes || 1);
+                const custoTotal = receita.ingredientes.reduce((a, b) => a + b.preco, 0);
+                
+                return `
+                <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1 mr-2 sm:mr-4 min-w-0">
+                            <input type="text" value="${nome}" onchange="atualizarReceita(${receita.id}, 'nome', this.value)"
+                                   class="input-field w-full text-base sm:text-lg font-bold bg-transparent border-b border-slate-600 focus:border-amber-400 px-0 py-1 mb-2 truncate">
+                            <div class="flex gap-2 flex-wrap">
+                                <select onchange="atualizarReceita(${receita.id}, 'categoria', this.value)"
+                                        class="input-field text-xs px-2 py-1 rounded-lg">
+                                    <option value="Café da Manhã" ${receita.categoria === 'Café da Manhã' ? 'selected' : ''}>Pequeno-almoço</option>
+                                    <option value="Almoço" ${receita.categoria === 'Almoço' ? 'selected' : ''}>Almoço</option>
+                                    <option value="Jantar" ${receita.categoria === 'Jantar' ? 'selected' : ''}>Jantar</option>
+                                    <option value="Lanche" ${receita.categoria === 'Lanche' ? 'selected' : ''}>Lanche</option>
+                                </select>
+                                <div class="flex items-center gap-1 sm:gap-2 text-sm text-slate-400">
+                                    <i data-lucide="users" class="w-4 h-4"></i>
+                                    <input type="number" value="${receita.porcoes}" min="1"
+                                           onchange="atualizarReceita(${receita.id}, 'porcoes', parseInt(this.value))"
+                                           class="input-field w-12 sm:w-16 text-center px-1 sm:px-2 py-1 rounded-lg text-xs">
+                                    <span class="text-xs whitespace-nowrap">porções</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="removerReceita(${receita.id})" class="delete-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Eliminar">
+                            <i data-lucide="trash-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        </button>
+                    </div>
+
+                    <div class="space-y-3 mb-4">
+                        ${receita.ingredientes.map((ing, idx) => {
+                            const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                            return `
+                            <div class="space-y-2 bg-slate-800/30 rounded-xl p-3 sm:p-0 sm:bg-transparent">
+                                <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'stockSelect', this.value)"
+                                        class="input-field w-full text-xs px-2 py-1.5 rounded-lg text-emerald-400 border-emerald-400/30 sm:mb-2">
+                                    <option value="">Do Estoque...</option>
+                                    ${estoque.map(item => {
+                                        const itemNome = idiomaAtual === 'pt' ? item.nome : (item.nomeEn || item.nome);
+                                        const selected = ing.stockId === item.id ? 'selected' : '';
+                                        return `<option value="${item.id}" ${selected}>${itemNome}</option>`;
+                                    }).join('')}
+                                </select>
+                                
+                                <div class="grid grid-cols-1 sm:flex sm:flex-row gap-2">
+                                    <input type="text" value="${nomeIng}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'nome', this.value)"
+                                           class="input-field w-full sm:flex-1 px-3 py-2 rounded-lg text-sm min-w-0" placeholder="Ingrediente">
+                                    
+                                    <div class="flex gap-2">
+                                        <input type="number" value="${ing.quantidade}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'quantidade', this.value)"
+                                               class="input-field w-20 sm:w-16 px-2 py-2 rounded-lg text-sm text-center" placeholder="Qtd">
+                                        <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'unidade', this.value)"
+                                                class="input-field w-16 px-1 py-2 rounded-lg text-sm text-center">
+                                            <option value="g" ${ing.unidade === 'g' ? 'selected' : ''}>g</option>
+                                            <option value="kg" ${ing.unidade === 'kg' ? 'selected' : ''}>kg</option>
+                                            <option value="ml" ${ing.unidade === 'ml' ? 'selected' : ''}>ml</option>
+                                            <option value="un" ${ing.unidade === 'un' ? 'selected' : ''}>un</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="relative w-full sm:w-28">
+                                        <span class="absolute left-3 top-2 text-slate-500 text-sm font-medium">${moedas[moedaAtual].simbolo}</span>
+                                        <input type="number" value="${ing.preco.toFixed(2)}" step="0.01" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'preco', this.value)"
+                                               class="input-field w-full pl-8 pr-3 py-2 rounded-lg text-sm font-medium text-right" placeholder="0,00">
+                                    </div>
+                                    
+                                    <button onclick="removerIngrediente(${receita.id}, ${idx})" class="delete-btn w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 sm:w-10" title="Remover">
+                                        <i data-lucide="minus" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `}).join('')}
+                    </div>
+
+                    <button onclick="adicionarIngrediente(${receita.id})" class="add-ingredient-btn w-full py-2.5 sm:py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all mb-4 text-sm sm:text-base">
+                        <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>Adicionar Ingrediente
+                    </button>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-4 border-t border-slate-700/50 gap-3">
+                        <div class="text-sm text-slate-400">
+                            <span class="block text-xs">Custo total previsto</span>
+                            <span class="text-lg font-bold text-emerald-400">${formatarMoeda(custoTotal)}</span>
+                            <span class="text-xs text-slate-500">(${formatarMoeda(custoPorcao)}/porção)</span>
+                        </div>
+                        <button onclick="abrirDoneModal(${receita.id})" class="done-btn px-4 sm:px-6 py-2 rounded-xl font-semibold flex items-center gap-2 transition-all w-full sm:w-auto justify-center">
+                            <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5"></i>Feito
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            // Receitas feitas
+            const receitasFeitasEsteMes = receitasFeitas.filter(r => {
+                const data = new Date(r.data);
+                const hoje = new Date();
+                return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
+            });
+            
+            if (receitasFeitasEsteMes.length > 0) {
+                sectionFeitas.classList.remove('hidden');
+                containerFeitas.innerHTML = receitasFeitasEsteMes.map(receita => {
+                    const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
+                    const data = new Date(receita.data).toLocaleDateString('pt-PT');
+                    
+                    return `
+                    <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50 opacity-85">
+                        <div class="filter grayscale-[0.3]">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i>
+                                        <h4 class="text-base sm:text-lg font-bold text-white truncate">${nome}</h4>
+                                    </div>
+                                    <p class="text-sm text-slate-400">${receita.categoria} • ${receita.porcoesFeitas} porções feitas</p>
+                                    <p class="text-xs text-slate-500 mt-1">Feito em: ${data}</p>
+                                </div>
+                                <button onclick="refazerReceita(${receita.id})" class="redo-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Refazer">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 sm:p-4 mb-3">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm text-slate-300">Custo real:</span>
+                                    <span class="text-xl sm:text-2xl font-bold text-emerald-400">${formatarMoeda(receita.custoReal)}</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-400">Por porção:</span>
+                                    <span class="text-emerald-300 font-medium">${formatarMoeda(receita.custoPorcaoReal)}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="text-xs text-slate-500">
+                                <p class="font-medium mb-1">Ingredientes usados:</p>
+                                <ul class="space-y-1 ml-2">
+                                    ${receita.ingredientes.map(ing => {
+                                        const qtdUsada = ing.quantidade * (receita.porcoesFeitas / receita.porcoes);
+                                        const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                                        return `<li>• ${nomeIng}: ${qtdUsada.toFixed(0)}${ing.unidade}</li>`;
+                                    }).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            } else {
+                sectionFeitas.classList.add('hidden');
+            }
+            
+            lucide.createIcons();
+        }
+
+        // ==================== ESTOQUE ====================
+        function adicionarItemEstoque() {
+            const novoItem = {
+                id: Date.now(),
+                nome: 'Novo Item',
+                nomeEn: 'New Item',
+                categoria: 'Outros',
+                quantidade: 1000,
+                unidade: 'g',
+                precoTotal: 0,
+                precoUnitario: 0,
+                validade: '',
+                minimo: 0
+            };
+            estoque.push(novoItem);
+            renderizarEstoque();
+        }
+
+        function removerItemEstoque(id) {
+            estoque = estoque.filter(e => e.id !== id);
+            renderizarEstoque();
+        }
+
+        function atualizarItemEstoque(id, campo, valor) {
+            const item = estoque.find(e => e.id === id);
+            
+            if (campo === 'nome') {
+                if (idiomaAtual === 'pt') item.nome = valor;
+                else item.nomeEn = valor;
+            } else if (campo === 'precoTotal') {
+                item.precoTotal = parseFloat(valor) || 0;
+                const qtdEmKg = item.unidade === 'kg' ? item.quantidade : item.quantidade / 1000;
+                item.precoUnitario = qtdEmKg > 0 ? item.precoTotal / qtdEmKg : 0;
+            } else if (campo === 'quantidade') {
+                item.quantidade = parseFloat(valor) || 0;
+                const qtdEmKg = item.unidade === 'kg' ? item.quantidade : item.quantidade / 1000;
+                item.precoUnitario = qtdEmKg > 0 ? item.precoTotal / qtdEmKg : 0;
+            } else if (campo === 'minimo') {
+                item.minimo = parseFloat(valor) || 0;
+            } else {
+                item[campo] = valor;
+            }
+            
+            renderizarEstoque();
+        }
+
+        function renderizarEstoque() {
+            const container = document.getElementById('listaEstoque');
+            const alertsContainer = document.getElementById('stockAlerts');
+            
+            // Alertas
+            const hoje = new Date();
+            let alertasHTML = '';
+            
+            estoque.forEach(item => {
+                const nome = idiomaAtual === 'pt' ? item.nome : (item.nomeEn || item.nome);
+                
+                if (item.quantidade <= item.minimo && item.minimo > 0) {
+                    alertasHTML += `
+                        <div class="border-l-4 border-rose-500 bg-rose-500/10 rounded-xl p-3 flex items-center gap-3">
+                            <i data-lucide="alert-circle" class="text-rose-400 w-5 h-5"></i>
+                            <span class="text-sm text-rose-200">Stock baixo: <strong>${nome}</strong> (${item.quantidade}${item.unidade})</span>
+                        </div>
+                    `;
+                }
+                
+                if (item.validade) {
+                    const validade = new Date(item.validade);
+                    const diff = Math.ceil((validade - hoje) / (1000 * 60 * 60 * 24));
+                    if (diff <= 7 && diff >= 0) {
+                        alertasHTML += `
+                            <div class="border-l-4 border-amber-500 bg-amber-500/10 rounded-xl p-3 flex items-center gap-3">
+                                <i data-lucide="clock" class="text-amber-400 w-5 h-5"></i>
+                                <span class="text-sm text-amber-200">Próximo da validade: <strong>${nome}</strong> (${diff} dias)</span>
+                            </div>
+                        `;
+                    }
+                }
+            });
+            
+            alertsContainer.innerHTML = alertasHTML || `
+                <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center gap-3">
+                    <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5"></i>
+                    <span class="text-sm text-emerald-200">Estoque OK - Sem alertas</span>
+                </div>
+            `;
+            
+            // Lista de itens
+            container.innerHTML = estoque.map(item => {
+                const nome = idiomaAtual === 'pt' ? item.nome : (item.nomeEn || item.nome);
+                const isLow = item.quantidade <= item.minimo && item.minimo > 0;
+                const qtdDisplay = item.quantidade >= 1000 && item.unidade === 'g' ? 
+                    `${(item.quantidade/1000).toFixed(2)} kg` : 
+                    `${item.quantidade} ${item.unidade}`;
+                
+                return `
+                <div class="glass-panel rounded-xl p-4 border border-slate-700/50 ${isLow ? 'border-l-4 border-l-rose-500 bg-rose-500/10' : ''}">
+                    <div class="flex justify-between items-start mb-3">
+                        <input type="text" value="${nome}" onchange="atualizarItemEstoque(${item.id}, 'nome', this.value)"
+                               class="input-field flex-1 mr-2 px-3 py-2 rounded-lg text-sm font-medium">
+                        <button onclick="removerItemEstoque(${item.id})" class="delete-btn w-8 h-8 rounded-lg flex items-center justify-center">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2 mb-3">
+                        <select onchange="atualizarItemEstoque(${item.id}, 'categoria', this.value)"
+                                class="input-field px-2 py-1 rounded-lg text-xs">
+                            ${categoriasEstoque.map(cat => `<option value="${cat}" ${item.categoria === cat ? 'selected' : ''}>${cat}</option>`).join('')}
+                        </select>
+                        <input type="date" value="${item.validade}" onchange="atualizarItemEstoque(${item.id}, 'validade', this.value)"
+                               class="input-field px-2 py-1 rounded-lg text-xs">
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex gap-2">
+                            <input type="number" value="${item.quantidade}" onchange="atualizarItemEstoque(${item.id}, 'quantidade', this.value)"
+                                   class="input-field flex-1 px-2 py-1 rounded-lg text-sm text-center">
+                            <select onchange="atualizarItemEstoque(${item.id}, 'unidade', this.value)"
+                                    class="input-field w-20 px-1 py-1 rounded-lg text-sm">
+                                <option value="g" ${item.unidade === 'g' ? 'selected' : ''}>g</option>
+                                <option value="kg" ${item.unidade === 'kg' ? 'selected' : ''}>kg</option>
+                                <option value="ml" ${item.unidade === 'ml' ? 'selected' : ''}>ml</option>
+                                <option value="un" ${item.unidade === 'un' ? 'selected' : ''}>un</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <span class="absolute left-2 top-1 text-slate-500 text-xs">Total</span>
+                                <input type="number" value="${item.precoTotal.toFixed(2)}" step="0.01" onchange="atualizarItemEstoque(${item.id}, 'precoTotal', this.value)"
+                                       class="input-field w-full pl-10 pr-2 py-1 rounded-lg text-sm">
+                            </div>
+                            <div class="relative flex-1">
+                                <span class="absolute left-2 top-1 text-slate-500 text-xs">/kg</span>
+                                <input type="number" value="${item.precoUnitario.toFixed(2)}" disabled
+                                       class="input-field w-full pl-8 pr-2 py-1 rounded-lg text-sm bg-slate-800/50">
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="text-slate-400">Mín:</span>
+                            <input type="number" value="${item.minimo}" onchange="atualizarItemEstoque(${item.id}, 'minimo', this.value)"
+                                   class="input-field w-20 px-2 py-1 rounded-lg text-center">
+                            <span class="text-slate-500">${item.unidade}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 pt-3 border-t border-slate-700/30 flex justify-between items-center">
+                        <span class="text-xs text-slate-400">Stock: <strong class="${isLow ? 'text-rose-400' : 'text-emerald-400'}">${qtdDisplay}</strong></span>
+                        <span class="text-xs text-slate-400">${formatarMoeda(item.precoUnitario)}/kg</span>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+        }
+
+        // ==================== CÁLCULOS ====================
+        function calcularTudo() {
+            const dias = parseInt(document.getElementById('diasPrep').value) || 20;
+            const refeicoes = parseInt(document.getElementById('refeicoesDia').value) || 2;
+            const pessoas = parseInt(document.getElementById('pessoas').value) || 1;
+            
+            const totalMarmitas = dias * refeicoes * pessoas;
+            let custoTotal = 0;
+            let pesoTotal = 0;
+            
+            receitas.forEach(r => {
+                const custoReceita = r.ingredientes.reduce((a, b) => a + b.preco, 0);
+                const pesoReceita = r.ingredientes.reduce((a, b) => a + (b.unidade === 'kg' ? b.quantidade * 1000 : b.quantidade), 0);
+                const multiplicador = Math.ceil(totalMarmitas / (r.porcoes || 1));
+                
+                custoTotal += custoReceita * multiplicador;
+                pesoTotal += (pesoReceita * multiplicador) / 1000;
+            });
+            
+            const custoPorMarmita = totalMarmitas > 0 ? custoTotal / totalMarmitas : 0;
+            
+            document.getElementById('custoTotal').textContent = formatarMoeda(custoTotal);
+            document.getElementById('custoUnidade').textContent = formatarMoeda(custoPorMarmita);
+            document.getElementById('totalMarmitas').textContent = totalMarmitas;
+            document.getElementById('pesoTotal').textContent = pesoTotal.toFixed(1) + ' kg';
+        }
+
+        // ==================== COMPRAS ====================
+        function renderizarCompras() {
+            const container = document.getElementById('listaCompras');
+            const lista = {};
+            
+            receitas.forEach(r => {
+                r.ingredientes.forEach(ing => {
+                    const nome = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                    if (!lista[nome]) {
+                        lista[nome] = { ...ing, nome: nome };
+                    } else {
+                        lista[nome].quantidade += ing.quantidade;
+                        lista[nome].preco += ing.preco;
+                    }
+                });
+            });
+            
+            container.innerHTML = Object.values(lista).map(item => `
+                <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-xl border border-slate-700">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" class="w-5 h-5 rounded border-slate-600 text-amber-400 focus:ring-amber-400 bg-slate-700">
+                        <span class="text-slate-200">${item.nome}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-amber-400 font-medium">${item.quantidade}${item.unidade}</span>
+                        <span class="text-slate-400 text-sm ml-2">${formatarMoeda(item.preco)}</span>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-slate-500 text-center py-8">Nenhum item na lista de compras</p>';
+        }
+
+        // ==================== ANÁLISE ====================
+        function gerarAnalise() {
+            const containerBreakdown = document.getElementById('breakdownRefeicoes');
+            const containerGrafico = document.getElementById('graficoCustos');
+            const containerResumo = document.getElementById('resumoCustos');
+            
+            const custosPorCategoria = {};
+            let custoTotal = 0;
+            
+            receitas.forEach(r => {
+                const custo = r.ingredientes.reduce((a, b) => a + b.preco, 0);
+                if (!custosPorCategoria[r.categoria]) custosPorCategoria[r.categoria] = 0;
+                custosPorCategoria[r.categoria] += custo;
+                custoTotal += custo;
+            });
+            
+            const categorias = ['Café da Manhã', 'Almoço', 'Jantar', 'Lanche'];
+            const cores = {
+                'Café da Manhã': 'from-orange-400 to-amber-500',
+                'Almoço': 'from-emerald-400 to-teal-500',
+                'Jantar': 'from-blue-400 to-indigo-500',
+                'Lanche': 'from-purple-400 to-pink-500'
+            };
+            const icones = {
+                'Café da Manhã': 'coffee',
+                'Almoço': 'sun',
+                'Jantar': 'moon',
+                'Lanche': 'apple'
+            };
+            const nomes = {
+                'Café da Manhã': 'Pequeno-almoço',
+                'Almoço': 'Almoço',
+                'Jantar': 'Jantar',
+                'Lanche': 'Lanche'
+            };
+            
+            containerBreakdown.innerHTML = categorias.map(cat => {
+                const custo = custosPorCategoria[cat] || 0;
+                if (custo === 0) return '';
+                
+                return `
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-slate-700/50">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br ${cores[cat]} flex items-center justify-center text-white">
+                                <i data-lucide="${icones[cat]}" class="w-5 h-5"></i>
+                            </div>
+                            <span class="font-bold text-white">${nomes[cat]}</span>
+                        </div>
+                        <span class="text-xl font-bold text-emerald-400">${formatarMoeda(custo)}</span>
+                    </div>
+                </div>
+                `;
+            }).join('') || '<p class="text-slate-500 text-center">Sem dados</p>';
+            
+            const categoriasComDados = Object.entries(custosPorCategoria).sort((a, b) => b[1] - a[1]);
+            containerGrafico.innerHTML = categoriasComDados.map(([cat, custo], idx) => {
+                const percentual = custoTotal > 0 ? (custo / custoTotal) * 100 : 0;
+                const coresBarra = ['bg-amber-400', 'bg-emerald-400', 'bg-blue-400', 'bg-purple-400'];
+                return `
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium text-slate-300">${nomes[cat]}</span>
+                        <span class="text-sm font-bold text-white">${formatarMoeda(custo)} (${percentual.toFixed(1)}%)</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
+                        <div class="${coresBarra[idx % coresBarra.length]} h-3 rounded-full transition-all duration-500" style="width: ${percentual}%"></div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            const totalReceitas = receitas.length;
+            const mediaPorReceita = totalReceitas > 0 ? custoTotal / totalReceitas : 0;
+            
+            containerResumo.innerHTML = `
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Receitas:</span>
+                    <span class="font-medium text-white">${totalReceitas}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Custo médio por receita:</span>
+                    <span class="font-medium text-emerald-400">${formatarMoeda(mediaPorReceita)}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">Custo total mensal:</span>
+                    <span class="font-medium text-amber-400">${formatarMoeda(custoTotal)}</span>
+                </div>
+            `;
+            
+            lucide.createIcons();
+        }
+
+        // ==================== HISTÓRICO ====================
+        function renderizarHistorico() {
+            const container = document.getElementById('listaHistorico');
+            const statsRecipes = document.getElementById('histTotalRecipes');
+            const statsSpent = document.getElementById('histTotalSpent');
+            const statsPortions = document.getElementById('histTotalPortions');
+            const statsAvg = document.getElementById('histAvgCost');
+            const containerCats = document.getElementById('historicoCategorias');
+            
+            const meses = {};
+            receitasFeitas.forEach(r => {
+                const data = new Date(r.data);
+                const mesKey = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+                if (!meses[mesKey]) meses[mesKey] = [];
+                meses[mesKey].push(r);
+            });
+            
+            const select = document.getElementById('historyMonth');
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">Selecionar mês...</option>';
+            Object.keys(meses).sort().reverse().forEach(mesKey => {
+                const [ano, mesNum] = mesKey.split('-');
+                const nomeMes = new Date(ano, mesNum - 1).toLocaleString('pt-PT', { month: 'long', year: 'numeric' });
+                select.add(new Option(nomeMes, mesKey));
+            });
+            if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+                select.value = currentValue;
+            }
+            
+            const mesSelecionado = select.value;
+            const receitasDoMes = meses[mesSelecionado] || [];
+            
+            const totalRecipes = receitasDoMes.length;
+            const totalSpent = receitasDoMes.reduce((a, r) => a + r.custoReal, 0);
+            const totalPortions = receitasDoMes.reduce((a, r) => a + r.porcoesFeitas, 0);
+            const avgCost = totalPortions > 0 ? totalSpent / totalPortions : 0;
+            
+            statsRecipes.textContent = totalRecipes;
+            statsSpent.textContent = formatarMoeda(totalSpent);
+            statsPortions.textContent = totalPortions;
+            statsAvg.textContent = formatarMoeda(avgCost);
+            
+            const custosCat = {};
+            receitasDoMes.forEach(r => {
+                if (!custosCat[r.categoria]) custosCat[r.categoria] = 0;
+                custosCat[r.categoria] += r.custoReal;
+            });
+            
+            const nomes = { 'Café da Manhã': 'Pequeno-almoço', 'Almoço': 'Almoço', 'Jantar': 'Jantar', 'Lanche': 'Lanche' };
+            
+            containerCats.innerHTML = Object.entries(custosCat).map(([cat, custo]) => {
+                const percentual = totalSpent > 0 ? (custo / totalSpent) * 100 : 0;
+                return `
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-300">${nomes[cat]}</span>
+                    <div class="flex items-center gap-3">
+                        <div class="w-32 bg-slate-700 rounded-full h-2">
+                            <div class="bg-amber-400 h-2 rounded-full" style="width: ${percentual}%"></div>
+                        </div>
+                        <span class="text-emerald-400 font-medium w-20 text-right">${formatarMoeda(custo)}</span>
+                    </div>
+                </div>
+                `;
+            }).join('') || '<p class="text-slate-500 text-center">Sem dados para este mês</p>';
+            
+            container.innerHTML = receitasDoMes.map(r => {
+                const nome = idiomaAtual === 'pt' ? r.nome : (r.nomeEn || r.nome);
+                const data = new Date(r.data).toLocaleDateString('pt-PT');
+                
+                return `
+                <div class="glass-panel rounded-xl p-5 border-l-4 border-l-amber-400 border border-slate-700/50">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h4 class="font-bold text-white text-lg">${nome}</h4>
+                            <p class="text-sm text-slate-400">${nomes[r.categoria]} • ${data}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-2xl font-bold text-emerald-400">${formatarMoeda(r.custoReal)}</p>
+                            <p class="text-xs text-slate-500">${r.porcoesFeitas} porções</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 rounded-lg p-3 mb-3">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-slate-400">Custo por porção:</span>
+                            <span class="text-emerald-300 font-medium">${formatarMoeda(r.custoPorcaoReal)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-xs text-slate-500">
+                        <p class="font-medium mb-2 text-slate-400">Ingredientes utilizados:</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            ${r.ingredientes.map(ing => {
+                                const qtdUsada = ing.quantidade * (r.porcoesFeitas / r.porcoes);
+                                const custoIng = ing.preco * (r.porcoesFeitas / r.porcoes);
+                                const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                                return `
+                                    <div class="flex justify-between">
+                                        <span>${nomeIng}</span>
+                                        <span class="text-slate-400">${qtdUsada.toFixed(0)}${ing.unidade} • ${formatarMoeda(custoIng)}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('') || '<p class="text-slate-500 text-center py-8">Nenhuma receita feita neste mês</p>';
+            
+            lucide.createIcons();
+        }
+
+        // ==================== DADOS (EXPORTAR/IMPORTAR) ====================
+        function exportarDados() {
+            const dados = {
+                versao: "2.0",
+                dataExport: new Date().toISOString(),
+                receitas: receitas,
+                receitasFeitas: receitasFeitas,
+                estoque: estoque,
+                config: {
+                    idioma: idiomaAtual,
+                    moeda: moedaAtual,
+                    diasPrep: document.getElementById('diasPrep').value,
+                    refeicoesDia: document.getElementById('refeicoesDia').value,
+                    pessoas: document.getElementById('pessoas').value
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `meal-prep-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importarDados(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const dados = JSON.parse(e.target.result);
+                    if (dados.receitas) receitas = dados.receitas;
+                    if (dados.receitasFeitas) receitasFeitas = dados.receitasFeitas;
+                    if (dados.estoque) estoque = dados.estoque;
+                    if (dados.config) {
+                        idiomaAtual = dados.config.idioma || 'pt';
+                        moedaAtual = dados.config.moeda || 'EUR';
+                        document.getElementById('diasPrep').value = dados.config.diasPrep || 20;
+                        document.getElementById('refeicoesDia').value = dados.config.refeicoesDia || 2;
+                        document.getElementById('pessoas').value = dados.config.pessoas || 1;
+                    }
+                    
+                    updateLanguageDisplay();
+                    updateCurrencyDisplay();
+                    renderizarTudo();
+                    alert('Dados importados com sucesso!');
+                } catch (error) {
+                    alert('Erro ao importar dados!');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function resetData() {
+            if (confirm('Deseja reiniciar todos os dados?')) {
+                receitas = [];
+                receitasFeitas = [];
+                estoque = [];
+                renderizarTudo();
+            }
+        }
+
+        function imprimirLista() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
