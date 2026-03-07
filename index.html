@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        /* CSS será incluído aqui ou linkado */
         body {
             font-family: 'Inter', sans-serif;
             background: #0f172a;
@@ -43,11 +44,6 @@
             box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
             outline: none;
         }
-        .input-price {
-            min-width: 100px;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-        }
         .animate-fade-in {
             animation: fadeIn 0.5s ease-out;
         }
@@ -55,110 +51,68 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .progress-bar {
-            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
-            transition: width 0.5s ease;
-        }
         .currency-selector, .language-selector {
             background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
             border: 1px solid rgba(251, 191, 36, 0.3);
         }
-        .currency-flag, .language-flag {
-            font-size: 1.2em;
-            margin-right: 0.5em;
+        .tab-btn {
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        @media (min-width: 640px) {
+            .tab-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+        .tab-btn:hover {
+            color: #e2e8f0;
         }
         .tab-active {
-            color: #fbbf24;
+            color: #fbbf24 !important;
             background: rgba(30, 41, 59, 0.5);
             border-top: 1px solid rgba(148, 163, 184, 0.2);
             border-left: 1px solid rgba(148, 163, 184, 0.2);
             border-right: 1px solid rgba(148, 163, 184, 0.2);
         }
-        .meal-breakdown {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-        }
-        .export-btn {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #34d399;
-        }
-        .export-btn:hover {
-            background: rgba(16, 185, 129, 0.3);
-        }
-        .import-btn {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #60a5fa;
-        }
-        .import-btn:hover {
-            background: rgba(59, 130, 246, 0.3);
-        }
-        input[type="file"] {
-            display: none;
-        }
         .action-btn {
             background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%);
             border: 1px solid rgba(251, 191, 36, 0.4);
             color: #fbbf24;
-            transition: all 0.2s ease;
-        }
-        .action-btn:hover {
-            background: rgba(251, 191, 36, 0.25);
-            border-color: rgba(251, 191, 36, 0.6);
-            transform: scale(1.05);
         }
         .delete-btn {
             background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(225, 29, 72, 0.15) 100%);
             border: 1px solid rgba(244, 63, 94, 0.4);
             color: #f43f5e;
         }
-        .delete-btn:hover {
-            background: rgba(244, 63, 94, 0.25);
-            border-color: rgba(244, 63, 94, 0.6);
-            transform: scale(1.05);
-        }
         .add-ingredient-btn {
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
             border: 1px solid rgba(16, 185, 129, 0.4);
             color: #10b981;
-        }
-        .add-ingredient-btn:hover {
-            background: rgba(16, 185, 129, 0.25);
-            border-color: rgba(16, 185, 129, 0.6);
         }
         .done-btn {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
             border: 1px solid rgba(59, 130, 246, 0.4);
             color: #60a5fa;
         }
-        .done-btn:hover {
-            background: rgba(59, 130, 246, 0.25);
-            border-color: rgba(59, 130, 246, 0.6);
-            transform: scale(1.05);
-        }
         .redo-btn {
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
             border: 1px solid rgba(16, 185, 129, 0.4);
             color: #10b981;
         }
-        .redo-btn:hover {
-            background: rgba(16, 185, 129, 0.25);
-            border-color: rgba(16, 185, 129, 0.6);
-            transform: scale(1.05);
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
-        .stock-low {
-            border-left: 4px solid #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-        }
-        .stock-warning {
-            border-left: 4px solid #f59e0b;
-            background: rgba(245, 158, 11, 0.1);
-        }
-        .recipe-done {
-            opacity: 0.85;
-        }
-        .recipe-done .recipe-content {
-            filter: grayscale(0.3);
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
         }
         .modal-overlay {
             background: rgba(0, 0, 0, 0.7);
@@ -167,13 +121,6 @@
         .modal-content {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid rgba(251, 191, 36, 0.3);
-        }
-        .history-month {
-            border-left: 3px solid #fbbf24;
-        }
-        .cost-display {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.3);
         }
     </style>
 </head>
@@ -219,7 +166,7 @@
         </div>
     </div>
 
-       <!-- Header -->
+    <!-- ==================== HEADER ==================== -->
     <header class="sticky top-0 z-50 glass-panel border-b border-slate-700/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
             <div class="flex items-center justify-between gap-2">
@@ -283,14 +230,14 @@
                     </button>
                 </div>
             </div>
-            <!-- Subtítulo mobile (opcional, abaixo do título) -->
+            <!-- Subtítulo mobile -->
             <p class="text-[10px] text-slate-400 sm:hidden mt-1 ml-10">Controlo Financeiro & Nutricional</p>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-        <!-- Configuração -->
+        <!-- ==================== CONFIGURAÇÃO ==================== -->
         <section class="glass-panel rounded-2xl p-6 card-hover">
             <div class="flex items-center gap-3 mb-6">
                 <i data-lucide="settings" class="text-amber-400 w-6 h-6"></i>
@@ -316,59 +263,58 @@
             </div>
         </section>
 
-        <!-- Dashboard -->
-<section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-    <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-amber-400">
-        <p class="text-slate-400 text-xs sm:text-sm mb-1">Custo Total Planeado</p>
-        <p class="text-xl sm:text-3xl font-bold text-white" id="custoTotal">€ 0,00</p>
-    </div>
-    <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-emerald-400">
-        <p class="text-slate-400 text-xs sm:text-sm mb-1">Custo por Marmita</p>
-        <p class="text-xl sm:text-3xl font-bold text-emerald-400" id="custoUnidade">€ 0,00</p>
-    </div>
-    <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-blue-400">
-        <p class="text-slate-400 text-xs sm:text-sm mb-1">Total de Marmitas</p>
-        <p class="text-xl sm:text-3xl font-bold text-blue-400" id="totalMarmitas">0</p>
-    </div>
-    <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-purple-400">
-        <p class="text-slate-400 text-xs sm:text-sm mb-1">Peso Total</p>
-        <p class="text-xl sm:text-3xl font-bold text-purple-400" id="pesoTotal">0 kg</p>
-    </div>
-</section>
+        <!-- ==================== DASHBOARD ==================== -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-amber-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Custo Total Planeado</p>
+                <p class="text-xl sm:text-3xl font-bold text-white" id="custoTotal">€ 0,00</p>
+            </div>
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-emerald-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Custo por Marmita</p>
+                <p class="text-xl sm:text-3xl font-bold text-emerald-400" id="custoUnidade">€ 0,00</p>
+            </div>
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-blue-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Total de Marmitas</p>
+                <p class="text-xl sm:text-3xl font-bold text-blue-400" id="totalMarmitas">0</p>
+            </div>
+            <div class="glass-panel rounded-2xl p-4 sm:p-6 border-l-4 border-purple-400">
+                <p class="text-slate-400 text-xs sm:text-sm mb-1">Peso Total</p>
+                <p class="text-xl sm:text-3xl font-bold text-purple-400" id="pesoTotal">0 kg</p>
+            </div>
+        </section>
 
-        <!-- Abas -->
-        <div class="flex gap-2 border-b border-slate-700 pb-1 overflow-x-auto">
-            <button onclick="switchTab('receitas')" id="tab-receitas" class="tab-btn px-6 py-3 rounded-t-xl font-medium tab-active transition-all">
-                <i data-lucide="book-open" class="inline w-4 h-4 mr-2"></i>Ementa
+        <!-- ==================== ABAS DE NAVEGAÇÃO ==================== -->
+        <div class="flex gap-1 sm:gap-2 border-b border-slate-700 pb-1 overflow-x-auto scrollbar-hide">
+            <button onclick="switchTab('receitas')" id="tab-receitas" class="tab-btn tab-active">
+                <i data-lucide="book-open" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Ementa</span>
             </button>
-            <button onclick="switchTab('estoque')" id="tab-estoque" class="tab-btn px-6 py-3 rounded-t-xl font-medium text-slate-400 hover:text-slate-200 transition-all">
-                <i data-lucide="package" class="inline w-4 h-4 mr-2"></i>Estoque
+            <button onclick="switchTab('estoque')" id="tab-estoque" class="tab-btn">
+                <i data-lucide="package" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Estoque</span>
             </button>
-            <button onclick="switchTab('compras')" id="tab-compras" class="tab-btn px-6 py-3 rounded-t-xl font-medium text-slate-400 hover:text-slate-200 transition-all">
-                <i data-lucide="shopping-cart" class="inline w-4 h-4 mr-2"></i>Compras
+            <button onclick="switchTab('compras')" id="tab-compras" class="tab-btn">
+                <i data-lucide="shopping-cart" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Compras</span>
             </button>
-            <button onclick="switchTab('analise')" id="tab-analise" class="tab-btn px-6 py-3 rounded-t-xl font-medium text-slate-400 hover:text-slate-200 transition-all">
-                <i data-lucide="pie-chart" class="inline w-4 h-4 mr-2"></i>Análise
+            <button onclick="switchTab('analise')" id="tab-analise" class="tab-btn">
+                <i data-lucide="pie-chart" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Análise</span>
             </button>
-            <button onclick="switchTab('historico')" id="tab-historico" class="tab-btn px-6 py-3 rounded-t-xl font-medium text-slate-400 hover:text-slate-200 transition-all">
-                <i data-lucide="history" class="inline w-4 h-4 mr-2"></i>Histórico
+            <button onclick="switchTab('historico')" id="tab-historico" class="tab-btn">
+                <i data-lucide="history" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Histórico</span>
             </button>
-            <button onclick="switchTab('dados')" id="tab-dados" class="tab-btn px-6 py-3 rounded-t-xl font-medium text-slate-400 hover:text-slate-200 transition-all">
-                <i data-lucide="database" class="inline w-4 h-4 mr-2"></i>Dados
+            <button onclick="switchTab('dados')" id="tab-dados" class="tab-btn">
+                <i data-lucide="database" class="inline w-4 h-4 mr-1 sm:mr-2"></i><span>Dados</span>
             </button>
         </div>
 
-        <!-- ABA: RECEITAS -->
+        <!-- ==================== CONTEÚDO: RECEITAS ==================== -->
         <div id="content-receitas" class="tab-content animate-fade-in">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold font-display">As suas Receitas</h3>
-                <button onclick="adicionarReceita()" class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center gap-2">
-                    <i data-lucide="plus" class="w-5 h-5"></i>Nova Receita
+                <button onclick="adicionarReceita()" class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center gap-2 text-sm sm:text-base">
+                    <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="hidden sm:inline">Nova Receita</span><span class="sm:hidden">Nova</span>
                 </button>
             </div>
             <div id="listaReceitas" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8"></div>
             
-            <!-- Receitas Feitas -->
             <div id="receitasFeitasSection" class="hidden">
                 <h3 class="text-xl font-bold font-display mb-4 flex items-center gap-2 text-emerald-400">
                     <i data-lucide="check-circle" class="w-6 h-6"></i>Receitas Feitas este Mês
@@ -377,32 +323,32 @@
             </div>
         </div>
 
-        <!-- ABA: ESTOQUE -->
+        <!-- ==================== CONTEÚDO: ESTOQUE ==================== -->
         <div id="content-estoque" class="tab-content hidden animate-fade-in">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold font-display">O seu Estoque</h3>
-                <button onclick="adicionarItemEstoque()" class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center gap-2">
-                    <i data-lucide="plus" class="w-5 h-5"></i>Adicionar Item
+                <button onclick="adicionarItemEstoque()" class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-amber-500/25 transition-all flex items-center gap-2 text-sm sm:text-base">
+                    <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="hidden sm:inline">Adicionar Item</span><span class="sm:hidden">Adicionar</span>
                 </button>
             </div>
             <div id="stockAlerts" class="mb-6 space-y-2"></div>
             <div id="listaEstoque" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
 
-        <!-- ABA: COMPRAS -->
+        <!-- ==================== CONTEÚDO: COMPRAS ==================== -->
         <div id="content-compras" class="tab-content hidden animate-fade-in">
             <div class="glass-panel rounded-2xl p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-bold font-display">Lista de Compras</h3>
-                    <button onclick="imprimirLista()" class="text-amber-400 hover:text-amber-300 flex items-center gap-2">
-                        <i data-lucide="printer" class="w-5 h-5"></i>Imprimir
+                    <button onclick="imprimirLista()" class="text-amber-400 hover:text-amber-300 flex items-center gap-2 text-sm sm:text-base">
+                        <i data-lucide="printer" class="w-4 h-4 sm:w-5 sm:h-5"></i><span class="hidden sm:inline">Imprimir</span>
                     </button>
                 </div>
                 <div id="listaCompras" class="space-y-2"></div>
             </div>
         </div>
 
-        <!-- ABA: ANÁLISE -->
+        <!-- ==================== CONTEÚDO: ANÁLISE ==================== -->
         <div id="content-analise" class="tab-content hidden animate-fade-in">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="glass-panel rounded-2xl p-6">
@@ -422,59 +368,56 @@
             </div>
         </div>
 
-        <!-- ABA: HISTÓRICO -->
+        <!-- ==================== CONTEÚDO: HISTÓRICO ==================== -->
         <div id="content-historico" class="tab-content hidden animate-fade-in">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold font-display">Histórico de Receitas</h3>
-                <select id="historyMonth" onchange="renderizarHistorico()" class="input-field px-4 py-2 rounded-xl text-white">
+                <select id="historyMonth" onchange="renderizarHistorico()" class="input-field px-4 py-2 rounded-xl text-white text-sm">
                     <option value="">Selecionar mês...</option>
                 </select>
             </div>
             
-            <!-- Estatísticas do Mês -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
                 <div class="glass-panel rounded-xl p-4 border-l-4 border-emerald-400">
                     <p class="text-slate-400 text-xs">Receitas Feitas</p>
-                    <p class="text-2xl font-bold text-white" id="histTotalRecipes">0</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histTotalRecipes">0</p>
                 </div>
                 <div class="glass-panel rounded-xl p-4 border-l-4 border-amber-400">
                     <p class="text-slate-400 text-xs">Total Gasto</p>
-                    <p class="text-2xl font-bold text-white" id="histTotalSpent">€ 0,00</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histTotalSpent">€ 0,00</p>
                 </div>
                 <div class="glass-panel rounded-xl p-4 border-l-4 border-blue-400">
                     <p class="text-slate-400 text-xs">Porções Feitas</p>
-                    <p class="text-2xl font-bold text-white" id="histTotalPortions">0</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histTotalPortions">0</p>
                 </div>
                 <div class="glass-panel rounded-xl p-4 border-l-4 border-purple-400">
                     <p class="text-slate-400 text-xs">Custo Médio/Porção</p>
-                    <p class="text-2xl font-bold text-white" id="histAvgCost">€ 0,00</p>
+                    <p class="text-xl sm:text-2xl font-bold text-white" id="histAvgCost">€ 0,00</p>
                 </div>
             </div>
             
-            <!-- Gasto por Categoria -->
             <div class="glass-panel rounded-2xl p-6 mb-6">
                 <h4 class="text-lg font-bold font-display mb-4">Gasto por Categoria</h4>
                 <div id="historicoCategorias" class="space-y-3"></div>
             </div>
             
-            <!-- Lista Detalhada -->
             <div id="listaHistorico" class="space-y-4"></div>
         </div>
 
-        <!-- ABA: DADOS -->
+        <!-- ==================== CONTEÚDO: DADOS ==================== -->
         <div id="content-dados" class="tab-content hidden animate-fade-in">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="glass-panel rounded-2xl p-6 border border-slate-700">
                     <h3 class="text-xl font-bold font-display mb-4">Exportar</h3>
-                    <button onclick="exportarDados()" class="export-btn w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2">
+                    <button onclick="exportarDados()" class="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-all">
                         <i data-lucide="file-json" class="w-5 h-5"></i>Descarregar
                     </button>
                 </div>
                 <div class="glass-panel rounded-2xl p-6 border border-slate-700">
                     <h3 class="text-xl font-bold font-display mb-4">Importar</h3>
-                    <label class="import-btn w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 cursor-pointer">
+                    <label class="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-all cursor-pointer">
                         <i data-lucide="file-up" class="w-5 h-5"></i>Carregar
-                        <input type="file" id="importFile" accept=".json" onchange="importarDados(this)">
+                        <input type="file" id="importFile" accept=".json" onchange="importarDados(this)" class="hidden">
                     </label>
                 </div>
             </div>
@@ -482,8 +425,9 @@
 
     </main>
 
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // Configurações
+        // ==================== CONFIGURAÇÕES ====================
         const moedas = {
             'EUR': { simbolo: '€', flag: '🇪🇺', posicao: 'depois', locale: 'pt-PT' },
             'BRL': { simbolo: 'R$', flag: '🇧🇷', posicao: 'antes', locale: 'pt-BR' },
@@ -496,13 +440,13 @@
         let pendingLanguageChange = null;
         let currentDoneRecipeId = null;
 
-        // Estado
+        // ==================== ESTADO ====================
         let receitas = [];
         let receitasFeitas = [];
         let estoque = [];
         let categoriasEstoque = ['Grãos', 'Legumes', 'Frutas', 'Carnes', 'Peixes', 'Laticínios', 'Ovos', 'Massas', 'Arroz', 'Feijão', 'Temperos', 'Óleos', 'Outros'];
 
-        // Inicialização
+        // ==================== INICIALIZAÇÃO ====================
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             inicializarDadosExemplo();
@@ -510,10 +454,19 @@
             updateCurrencyDisplay();
             renderizarTudo();
             
+            // Fechar menus ao clicar fora
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.group')) {
-                    document.getElementById('currencyMenu').classList.add('hidden');
-                    document.getElementById('languageMenu').classList.add('hidden');
+                const languageBtn = e.target.closest('.language-selector');
+                const currencyBtn = e.target.closest('.currency-selector');
+                const languageMenu = document.getElementById('languageMenu');
+                const currencyMenu = document.getElementById('currencyMenu');
+                
+                if (!languageBtn && languageMenu && !languageMenu.contains(e.target)) {
+                    languageMenu.classList.add('hidden');
+                }
+                
+                if (!currencyBtn && currencyMenu && !currencyMenu.contains(e.target)) {
+                    currencyMenu.classList.add('hidden');
                 }
             });
         });
@@ -540,14 +493,29 @@
             ];
         }
 
+        // ==================== IDIOMA E MOEDA ====================
         function toggleLanguageMenu() {
-            document.getElementById('languageMenu').classList.toggle('hidden');
-            document.getElementById('currencyMenu').classList.add('hidden');
+            const menu = document.getElementById('languageMenu');
+            const currencyMenu = document.getElementById('currencyMenu');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                if (currencyMenu) currencyMenu.classList.add('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
         }
 
         function toggleCurrencyMenu() {
-            document.getElementById('currencyMenu').classList.toggle('hidden');
-            document.getElementById('languageMenu').classList.add('hidden');
+            const menu = document.getElementById('currencyMenu');
+            const languageMenu = document.getElementById('languageMenu');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                if (languageMenu) languageMenu.classList.add('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
         }
 
         function prepareLanguageChange(codigo) {
@@ -580,17 +548,24 @@
             updateCurrencyDisplay();
             document.getElementById('currencyMenu').classList.add('hidden');
             calcularTudo();
+            renderizarTudo();
         }
 
         function updateLanguageDisplay() {
-            document.getElementById('currentLanguageFlag').textContent = idiomaAtual === 'pt' ? '🇵🇹' : '🇬🇧';
-            document.getElementById('currentLanguageCode').textContent = idiomaAtual.toUpperCase();
+            const flagEl = document.getElementById('currentLanguageFlag');
+            const codeEl = document.getElementById('currentLanguageCode');
+            
+            if (flagEl) flagEl.textContent = idiomaAtual === 'pt' ? '🇵🇹' : '🇬🇧';
+            if (codeEl) codeEl.textContent = idiomaAtual.toUpperCase();
         }
 
         function updateCurrencyDisplay() {
             const moeda = moedas[moedaAtual];
-            document.getElementById('currentCurrencyFlag').textContent = moeda.flag;
-            document.getElementById('currentCurrencyCode').textContent = moedaAtual;
+            const flagEl = document.getElementById('currentCurrencyFlag');
+            const codeEl = document.getElementById('currentCurrencyCode');
+            
+            if (flagEl) flagEl.textContent = moeda.flag;
+            if (codeEl) codeEl.textContent = moedaAtual;
         }
 
         function formatarMoeda(valor) {
@@ -602,30 +577,49 @@
             return moeda.posicao === 'antes' ? `${moeda.simbolo} ${valorFormatado}` : `${valorFormatado} ${moeda.simbolo}`;
         }
 
+        // ==================== NAVEGAÇÃO DE ABAS ====================
         function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            const tabs = ['receitas', 'estoque', 'compras', 'analise', 'historico', 'dados'];
             
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('tab-active');
-                btn.classList.add('text-slate-400');
+            // Esconder todos os conteúdos
+            tabs.forEach(t => {
+                const content = document.getElementById(`content-${t}`);
+                if (content) content.classList.add('hidden');
             });
             
-            const activeBtn = document.getElementById(`tab-${tabName}`);
-            activeBtn.classList.remove('text-slate-400');
-            activeBtn.classList.add('tab-active');
+            // Mostrar conteúdo selecionado
+            const selectedContent = document.getElementById(`content-${tabName}`);
+            if (selectedContent) selectedContent.classList.remove('hidden');
             
+            // Resetar todas as abas
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (btn) {
+                    btn.classList.remove('tab-active');
+                }
+            });
+            
+            // Ativar aba selecionada
+            const selectedBtn = document.getElementById(`tab-${tabName}`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('tab-active');
+            }
+            
+            // Renderizar conteúdo específico
             if (tabName === 'estoque') renderizarEstoque();
             if (tabName === 'analise') gerarAnalise();
             if (tabName === 'historico') renderizarHistorico();
+            
+            // Recriar ícones
+            lucide.createIcons();
         }
 
+        // ==================== RECEITAS ====================
         function renderizarTudo() {
             renderizarReceitas();
             calcularTudo();
         }
 
-        // RECEITAS
         function adicionarReceita() {
             const novaReceita = {
                 id: Date.now(),
@@ -737,10 +731,8 @@
                 }
             });
             
-            // Calcular custo real
             const custoReal = receita.ingredientes.reduce((a, b) => a + (b.preco * (porcoes / receita.porcoes)), 0);
             
-            // Mover para histórico
             const receitaFeita = {
                 ...receita,
                 data: new Date().toISOString(),
@@ -760,7 +752,6 @@
             const receitaFeita = receitasFeitas.find(r => r.id === receitaFeitaId);
             if (!receitaFeita) return;
             
-            // Criar nova receita baseada na feita (sem o histórico)
             const novaReceita = {
                 id: Date.now(),
                 nome: receitaFeita.nome,
@@ -769,7 +760,7 @@
                 porcoes: receitaFeita.porcoes,
                 ingredientes: receitaFeita.ingredientes.map(ing => ({
                     ...ing,
-                    fromStock: false, // Resetar ligação ao estoque para reavaliar
+                    fromStock: false,
                     stockId: null
                 })),
                 feito: false
@@ -780,190 +771,169 @@
         }
 
         function renderizarReceitas() {
-    const container = document.getElementById('listaReceitas');
-    const containerFeitas = document.getElementById('listaReceitasFeitas');
-    const sectionFeitas = document.getElementById('receitasFeitasSection');
-    
-    // Receitas ativas (editáveis)
-    container.innerHTML = receitas.map(receita => {
-        const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
-        const custoPorcao = receita.ingredientes.reduce((a, b) => a + b.preco, 0) / (receita.porcoes || 1);
-        const custoTotal = receita.ingredientes.reduce((a, b) => a + b.preco, 0);
-        
-        return `
-        <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50">
-            <div class="flex justify-between items-start mb-4">
-                <div class="flex-1 mr-2 sm:mr-4 min-w-0">
-                    <input type="text" value="${nome}" onchange="atualizarReceita(${receita.id}, 'nome', this.value)"
-                           class="input-field w-full text-base sm:text-lg font-bold bg-transparent border-b border-slate-600 focus:border-amber-400 px-0 py-1 mb-2 truncate">
-                    <div class="flex gap-2 flex-wrap">
-                        <select onchange="atualizarReceita(${receita.id}, 'categoria', this.value)"
-                                class="input-field text-xs px-2 py-1 rounded-lg">
-                            <option value="Café da Manhã" ${receita.categoria === 'Café da Manhã' ? 'selected' : ''}>Pequeno-almoço</option>
-                            <option value="Almoço" ${receita.categoria === 'Almoço' ? 'selected' : ''}>Almoço</option>
-                            <option value="Jantar" ${receita.categoria === 'Jantar' ? 'selected' : ''}>Jantar</option>
-                            <option value="Lanche" ${receita.categoria === 'Lanche' ? 'selected' : ''}>Lanche</option>
-                        </select>
-                        <div class="flex items-center gap-1 sm:gap-2 text-sm text-slate-400">
-                            <i data-lucide="users" class="w-4 h-4"></i>
-                            <input type="number" value="${receita.porcoes}" min="1"
-                                   onchange="atualizarReceita(${receita.id}, 'porcoes', parseInt(this.value))"
-                                   class="input-field w-12 sm:w-16 text-center px-1 sm:px-2 py-1 rounded-lg text-xs">
-                            <span class="text-xs whitespace-nowrap">porções</span>
-                        </div>
-                    </div>
-                </div>
-                <button onclick="removerReceita(${receita.id})" class="delete-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Eliminar">
-                    <i data-lucide="trash-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                </button>
-            </div>
-
-            <div class="space-y-3 mb-4">
-                <div class="hidden sm:flex justify-between text-xs text-slate-500 uppercase tracking-wider mb-2">
-                    <span class="flex-1">Ingrediente</span>
-                    <span class="w-20 text-center">Qtd</span>
-                    <span class="w-16 text-center">Un</span>
-                    <span class="w-28 text-right">Preço</span>
-                    <span class="w-10"></span>
-                </div>
-                ${receita.ingredientes.map((ing, idx) => {
-                    const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
-                    return `
-                    <div class="space-y-2 bg-slate-800/30 rounded-xl p-3 sm:p-0 sm:bg-transparent">
-                        <!-- Select do estoque -->
-                        <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'stockSelect', this.value)"
-                                class="input-field w-full text-xs px-2 py-1.5 rounded-lg text-emerald-400 border-emerald-400/30 sm:mb-2">
-                            <option value="">Do Estoque...</option>
-                            ${estoque.map(item => {
-                                const itemNome = idiomaAtual === 'pt' ? item.nome : (item.nomeEn || item.nome);
-                                const selected = ing.stockId === item.id ? 'selected' : '';
-                                return `<option value="${item.id}" ${selected}>${itemNome}</option>`;
-                            }).join('')}
-                        </select>
-                        
-                        <!-- Grid responsivo dos inputs -->
-                        <div class="grid grid-cols-1 sm:flex sm:flex-row gap-2">
-                            <!-- Nome do ingrediente - ocupa linha inteira no mobile -->
-                            <input type="text" value="${nomeIng}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'nome', this.value)"
-                                   class="input-field w-full sm:flex-1 px-3 py-2 rounded-lg text-sm min-w-0" placeholder="Ingrediente">
-                            
-                            <!-- Qtd, Un e Preço em linha no mobile -->
-                            <div class="flex gap-2">
-                                <input type="number" value="${ing.quantidade}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'quantidade', this.value)"
-                                       class="input-field w-20 sm:w-16 px-2 py-2 rounded-lg text-sm text-center" placeholder="Qtd">
-                                <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'unidade', this.value)"
-                                        class="input-field w-16 px-1 py-2 rounded-lg text-sm text-center">
-                                    <option value="g" ${ing.unidade === 'g' ? 'selected' : ''}>g</option>
-                                    <option value="kg" ${ing.unidade === 'kg' ? 'selected' : ''}>kg</option>
-                                    <option value="ml" ${ing.unidade === 'ml' ? 'selected' : ''}>ml</option>
-                                    <option value="un" ${ing.unidade === 'un' ? 'selected' : ''}>un</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Preço -->
-                            <div class="relative w-full sm:w-28">
-                                <span class="absolute left-3 top-2 text-slate-500 text-sm font-medium">${moedas[moedaAtual].simbolo}</span>
-                                <input type="number" value="${ing.preco.toFixed(2)}" step="0.01" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'preco', this.value)"
-                                       class="input-field w-full pl-8 pr-3 py-2 rounded-lg text-sm font-medium text-right" placeholder="0,00">
-                            </div>
-                            
-                            <!-- Botão remover -->
-                            <button onclick="removerIngrediente(${receita.id}, ${idx})" class="delete-btn w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 sm:w-10" title="Remover">
-                                <i data-lucide="minus" class="w-5 h-5"></i>
-                            </button>
-                        </div>
-                    </div>
-                `}).join('')}
-            </div>
-
-            <button onclick="adicionarIngrediente(${receita.id})" class="add-ingredient-btn w-full py-2.5 sm:py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all mb-4 text-sm sm:text-base">
-                <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>Adicionar Ingrediente
-            </button>
-
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-4 border-t border-slate-700/50 gap-3">
-                <div class="text-sm text-slate-400">
-                    <span class="block text-xs">Custo total previsto</span>
-                    <span class="text-lg font-bold text-emerald-400">${formatarMoeda(custoTotal)}</span>
-                    <span class="text-xs text-slate-500">(${formatarMoeda(custoPorcao)}/porção)</span>
-                </div>
-                <button onclick="abrirDoneModal(${receita.id})" class="done-btn px-4 sm:px-6 py-2 rounded-xl font-semibold flex items-center gap-2 transition-all w-full sm:w-auto justify-center">
-                    <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5"></i>Feito
-                </button>
-            </div>
-        </div>
-        `;
-    }).join('');
-    
-    // ... resto da função permanece igual (receitas feitas)
-    
-    // Receitas feitas (visualização apenas + refazer)
-    if (receitasFeitas.filter(r => {
-        const data = new Date(r.data);
-        const hoje = new Date();
-        return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
-    }).length > 0) {
-        
-        const receitasFeitasEsteMes = receitasFeitas.filter(r => {
-            const data = new Date(r.data);
-            const hoje = new Date();
-            return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
-        });
-        
-        sectionFeitas.classList.remove('hidden');
-        containerFeitas.innerHTML = receitasFeitasEsteMes.map(receita => {
-            const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
-            const data = new Date(receita.data).toLocaleDateString('pt-PT');
+            const container = document.getElementById('listaReceitas');
+            const containerFeitas = document.getElementById('listaReceitasFeitas');
+            const sectionFeitas = document.getElementById('receitasFeitasSection');
             
-            return `
-            <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50 recipe-done">
-                <div class="recipe-content">
+            container.innerHTML = receitas.map(receita => {
+                const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
+                const custoPorcao = receita.ingredientes.reduce((a, b) => a + b.preco, 0) / (receita.porcoes || 1);
+                const custoTotal = receita.ingredientes.reduce((a, b) => a + b.preco, 0);
+                
+                return `
+                <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-1">
-                                <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i>
-                                <h4 class="text-base sm:text-lg font-bold text-white truncate">${nome}</h4>
+                        <div class="flex-1 mr-2 sm:mr-4 min-w-0">
+                            <input type="text" value="${nome}" onchange="atualizarReceita(${receita.id}, 'nome', this.value)"
+                                   class="input-field w-full text-base sm:text-lg font-bold bg-transparent border-b border-slate-600 focus:border-amber-400 px-0 py-1 mb-2 truncate">
+                            <div class="flex gap-2 flex-wrap">
+                                <select onchange="atualizarReceita(${receita.id}, 'categoria', this.value)"
+                                        class="input-field text-xs px-2 py-1 rounded-lg">
+                                    <option value="Café da Manhã" ${receita.categoria === 'Café da Manhã' ? 'selected' : ''}>Pequeno-almoço</option>
+                                    <option value="Almoço" ${receita.categoria === 'Almoço' ? 'selected' : ''}>Almoço</option>
+                                    <option value="Jantar" ${receita.categoria === 'Jantar' ? 'selected' : ''}>Jantar</option>
+                                    <option value="Lanche" ${receita.categoria === 'Lanche' ? 'selected' : ''}>Lanche</option>
+                                </select>
+                                <div class="flex items-center gap-1 sm:gap-2 text-sm text-slate-400">
+                                    <i data-lucide="users" class="w-4 h-4"></i>
+                                    <input type="number" value="${receita.porcoes}" min="1"
+                                           onchange="atualizarReceita(${receita.id}, 'porcoes', parseInt(this.value))"
+                                           class="input-field w-12 sm:w-16 text-center px-1 sm:px-2 py-1 rounded-lg text-xs">
+                                    <span class="text-xs whitespace-nowrap">porções</span>
+                                </div>
                             </div>
-                            <p class="text-sm text-slate-400">${receita.categoria} • ${receita.porcoesFeitas} porções feitas</p>
-                            <p class="text-xs text-slate-500 mt-1">Feito em: ${data}</p>
                         </div>
-                        <button onclick="refazerReceita(${receita.id})" class="redo-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Refazer">
-                            <i data-lucide="rotate-ccw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                        <button onclick="removerReceita(${receita.id})" class="delete-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Eliminar">
+                            <i data-lucide="trash-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </button>
                     </div>
-                    
-                    <div class="cost-display rounded-xl p-3 sm:p-4 mb-3">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sm text-slate-300">Custo real:</span>
-                            <span class="text-xl sm:text-2xl font-bold text-emerald-400">${formatarMoeda(receita.custoReal)}</span>
-                        </div>
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-slate-400">Por porção:</span>
-                            <span class="text-emerald-300 font-medium">${formatarMoeda(receita.custoPorcaoReal)}</span>
-                        </div>
+
+                    <div class="space-y-3 mb-4">
+                        ${receita.ingredientes.map((ing, idx) => {
+                            const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                            return `
+                            <div class="space-y-2 bg-slate-800/30 rounded-xl p-3 sm:p-0 sm:bg-transparent">
+                                <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'stockSelect', this.value)"
+                                        class="input-field w-full text-xs px-2 py-1.5 rounded-lg text-emerald-400 border-emerald-400/30 sm:mb-2">
+                                    <option value="">Do Estoque...</option>
+                                    ${estoque.map(item => {
+                                        const itemNome = idiomaAtual === 'pt' ? item.nome : (item.nomeEn || item.nome);
+                                        const selected = ing.stockId === item.id ? 'selected' : '';
+                                        return `<option value="${item.id}" ${selected}>${itemNome}</option>`;
+                                    }).join('')}
+                                </select>
+                                
+                                <div class="grid grid-cols-1 sm:flex sm:flex-row gap-2">
+                                    <input type="text" value="${nomeIng}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'nome', this.value)"
+                                           class="input-field w-full sm:flex-1 px-3 py-2 rounded-lg text-sm min-w-0" placeholder="Ingrediente">
+                                    
+                                    <div class="flex gap-2">
+                                        <input type="number" value="${ing.quantidade}" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'quantidade', this.value)"
+                                               class="input-field w-20 sm:w-16 px-2 py-2 rounded-lg text-sm text-center" placeholder="Qtd">
+                                        <select onchange="atualizarIngrediente(${receita.id}, ${idx}, 'unidade', this.value)"
+                                                class="input-field w-16 px-1 py-2 rounded-lg text-sm text-center">
+                                            <option value="g" ${ing.unidade === 'g' ? 'selected' : ''}>g</option>
+                                            <option value="kg" ${ing.unidade === 'kg' ? 'selected' : ''}>kg</option>
+                                            <option value="ml" ${ing.unidade === 'ml' ? 'selected' : ''}>ml</option>
+                                            <option value="un" ${ing.unidade === 'un' ? 'selected' : ''}>un</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="relative w-full sm:w-28">
+                                        <span class="absolute left-3 top-2 text-slate-500 text-sm font-medium">${moedas[moedaAtual].simbolo}</span>
+                                        <input type="number" value="${ing.preco.toFixed(2)}" step="0.01" onchange="atualizarIngrediente(${receita.id}, ${idx}, 'preco', this.value)"
+                                               class="input-field w-full pl-8 pr-3 py-2 rounded-lg text-sm font-medium text-right" placeholder="0,00">
+                                    </div>
+                                    
+                                    <button onclick="removerIngrediente(${receita.id}, ${idx})" class="delete-btn w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 sm:w-10" title="Remover">
+                                        <i data-lucide="minus" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `}).join('')}
                     </div>
-                    
-                    <div class="text-xs text-slate-500">
-                        <p class="font-medium mb-1">Ingredientes usados:</p>
-                        <ul class="space-y-1 ml-2">
-                            ${receita.ingredientes.map(ing => {
-                                const qtdUsada = ing.quantidade * (receita.porcoesFeitas / receita.porcoes);
-                                const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
-                                return `<li>• ${nomeIng}: ${qtdUsada.toFixed(0)}${ing.unidade}</li>`;
-                            }).join('')}
-                        </ul>
+
+                    <button onclick="adicionarIngrediente(${receita.id})" class="add-ingredient-btn w-full py-2.5 sm:py-3 rounded-xl font-medium flex items-center justify-center gap-2 transition-all mb-4 text-sm sm:text-base">
+                        <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>Adicionar Ingrediente
+                    </button>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-4 border-t border-slate-700/50 gap-3">
+                        <div class="text-sm text-slate-400">
+                            <span class="block text-xs">Custo total previsto</span>
+                            <span class="text-lg font-bold text-emerald-400">${formatarMoeda(custoTotal)}</span>
+                            <span class="text-xs text-slate-500">(${formatarMoeda(custoPorcao)}/porção)</span>
+                        </div>
+                        <button onclick="abrirDoneModal(${receita.id})" class="done-btn px-4 sm:px-6 py-2 rounded-xl font-semibold flex items-center gap-2 transition-all w-full sm:w-auto justify-center">
+                            <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5"></i>Feito
+                        </button>
                     </div>
                 </div>
-            </div>
-            `;
-        }).join('');
-    } else {
-        sectionFeitas.classList.add('hidden');
-    }
-    
-    lucide.createIcons();
-}
+                `;
+            }).join('');
+            
+            // Receitas feitas
+            const receitasFeitasEsteMes = receitasFeitas.filter(r => {
+                const data = new Date(r.data);
+                const hoje = new Date();
+                return data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear();
+            });
+            
+            if (receitasFeitasEsteMes.length > 0) {
+                sectionFeitas.classList.remove('hidden');
+                containerFeitas.innerHTML = receitasFeitasEsteMes.map(receita => {
+                    const nome = idiomaAtual === 'pt' ? receita.nome : (receita.nomeEn || receita.nome);
+                    const data = new Date(receita.data).toLocaleDateString('pt-PT');
+                    
+                    return `
+                    <div class="glass-panel rounded-2xl p-4 sm:p-6 card-hover border border-slate-700/50 opacity-85">
+                        <div class="filter grayscale-[0.3]">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <i data-lucide="check-circle" class="text-emerald-400 w-5 h-5 flex-shrink-0"></i>
+                                        <h4 class="text-base sm:text-lg font-bold text-white truncate">${nome}</h4>
+                                    </div>
+                                    <p class="text-sm text-slate-400">${receita.categoria} • ${receita.porcoesFeitas} porções feitas</p>
+                                    <p class="text-xs text-slate-500 mt-1">Feito em: ${data}</p>
+                                </div>
+                                <button onclick="refazerReceita(${receita.id})" class="redo-btn w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0" title="Refazer">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 sm:p-4 mb-3">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm text-slate-300">Custo real:</span>
+                                    <span class="text-xl sm:text-2xl font-bold text-emerald-400">${formatarMoeda(receita.custoReal)}</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-400">Por porção:</span>
+                                    <span class="text-emerald-300 font-medium">${formatarMoeda(receita.custoPorcaoReal)}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="text-xs text-slate-500">
+                                <p class="font-medium mb-1">Ingredientes usados:</p>
+                                <ul class="space-y-1 ml-2">
+                                    ${receita.ingredientes.map(ing => {
+                                        const qtdUsada = ing.quantidade * (receita.porcoesFeitas / receita.porcoes);
+                                        const nomeIng = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                                        return `<li>• ${nomeIng}: ${qtdUsada.toFixed(0)}${ing.unidade}</li>`;
+                                    }).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            } else {
+                sectionFeitas.classList.add('hidden');
+            }
+            
+            lucide.createIcons();
+        }
 
-        // ESTOQUE
+        // ==================== ESTOQUE ====================
         function adicionarItemEstoque() {
             const novoItem = {
                 id: Date.now(),
@@ -1022,7 +992,7 @@
                 
                 if (item.quantidade <= item.minimo && item.minimo > 0) {
                     alertasHTML += `
-                        <div class="stock-low rounded-xl p-3 flex items-center gap-3">
+                        <div class="border-l-4 border-rose-500 bg-rose-500/10 rounded-xl p-3 flex items-center gap-3">
                             <i data-lucide="alert-circle" class="text-rose-400 w-5 h-5"></i>
                             <span class="text-sm text-rose-200">Stock baixo: <strong>${nome}</strong> (${item.quantidade}${item.unidade})</span>
                         </div>
@@ -1034,7 +1004,7 @@
                     const diff = Math.ceil((validade - hoje) / (1000 * 60 * 60 * 24));
                     if (diff <= 7 && diff >= 0) {
                         alertasHTML += `
-                            <div class="stock-warning rounded-xl p-3 flex items-center gap-3">
+                            <div class="border-l-4 border-amber-500 bg-amber-500/10 rounded-xl p-3 flex items-center gap-3">
                                 <i data-lucide="clock" class="text-amber-400 w-5 h-5"></i>
                                 <span class="text-sm text-amber-200">Próximo da validade: <strong>${nome}</strong> (${diff} dias)</span>
                             </div>
@@ -1059,7 +1029,7 @@
                     `${item.quantidade} ${item.unidade}`;
                 
                 return `
-                <div class="glass-panel rounded-xl p-4 border border-slate-700/50 ${isLow ? 'stock-low' : ''}">
+                <div class="glass-panel rounded-xl p-4 border border-slate-700/50 ${isLow ? 'border-l-4 border-l-rose-500 bg-rose-500/10' : ''}">
                     <div class="flex justify-between items-start mb-3">
                         <input type="text" value="${nome}" onchange="atualizarItemEstoque(${item.id}, 'nome', this.value)"
                                class="input-field flex-1 mr-2 px-3 py-2 rounded-lg text-sm font-medium">
@@ -1122,7 +1092,7 @@
             lucide.createIcons();
         }
 
-        // CÁLCULOS
+        // ==================== CÁLCULOS ====================
         function calcularTudo() {
             const dias = parseInt(document.getElementById('diasPrep').value) || 20;
             const refeicoes = parseInt(document.getElementById('refeicoesDia').value) || 2;
@@ -1149,6 +1119,38 @@
             document.getElementById('pesoTotal').textContent = pesoTotal.toFixed(1) + ' kg';
         }
 
+        // ==================== COMPRAS ====================
+        function renderizarCompras() {
+            const container = document.getElementById('listaCompras');
+            const lista = {};
+            
+            receitas.forEach(r => {
+                r.ingredientes.forEach(ing => {
+                    const nome = idiomaAtual === 'pt' ? ing.nome : (ing.nomeEn || ing.nome);
+                    if (!lista[nome]) {
+                        lista[nome] = { ...ing, nome: nome };
+                    } else {
+                        lista[nome].quantidade += ing.quantidade;
+                        lista[nome].preco += ing.preco;
+                    }
+                });
+            });
+            
+            container.innerHTML = Object.values(lista).map(item => `
+                <div class="flex justify-between items-center p-3 bg-slate-800/50 rounded-xl border border-slate-700">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" class="w-5 h-5 rounded border-slate-600 text-amber-400 focus:ring-amber-400 bg-slate-700">
+                        <span class="text-slate-200">${item.nome}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-amber-400 font-medium">${item.quantidade}${item.unidade}</span>
+                        <span class="text-slate-400 text-sm ml-2">${formatarMoeda(item.preco)}</span>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-slate-500 text-center py-8">Nenhum item na lista de compras</p>';
+        }
+
+        // ==================== ANÁLISE ====================
         function gerarAnalise() {
             const containerBreakdown = document.getElementById('breakdownRefeicoes');
             const containerGrafico = document.getElementById('graficoCustos');
@@ -1164,7 +1166,6 @@
                 custoTotal += custo;
             });
             
-            // Breakdown
             const categorias = ['Café da Manhã', 'Almoço', 'Jantar', 'Lanche'];
             const cores = {
                 'Café da Manhã': 'from-orange-400 to-amber-500',
@@ -1190,7 +1191,7 @@
                 if (custo === 0) return '';
                 
                 return `
-                <div class="meal-breakdown rounded-xl p-4 border border-slate-700/50">
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-slate-700/50">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-gradient-to-br ${cores[cat]} flex items-center justify-center text-white">
@@ -1204,7 +1205,6 @@
                 `;
             }).join('') || '<p class="text-slate-500 text-center">Sem dados</p>';
             
-            // Gráfico
             const categoriasComDados = Object.entries(custosPorCategoria).sort((a, b) => b[1] - a[1]);
             containerGrafico.innerHTML = categoriasComDados.map(([cat, custo], idx) => {
                 const percentual = custoTotal > 0 ? (custo / custoTotal) * 100 : 0;
@@ -1216,13 +1216,12 @@
                         <span class="text-sm font-bold text-white">${formatarMoeda(custo)} (${percentual.toFixed(1)}%)</span>
                     </div>
                     <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
-                        <div class="${coresBarra[idx % coresBarra.length]} h-3 rounded-full progress-bar" style="width: ${percentual}%"></div>
+                        <div class="${coresBarra[idx % coresBarra.length]} h-3 rounded-full transition-all duration-500" style="width: ${percentual}%"></div>
                     </div>
                 </div>
                 `;
             }).join('');
             
-            // Resumo
             const totalReceitas = receitas.length;
             const mediaPorReceita = totalReceitas > 0 ? custoTotal / totalReceitas : 0;
             
@@ -1244,6 +1243,7 @@
             lucide.createIcons();
         }
 
+        // ==================== HISTÓRICO ====================
         function renderizarHistorico() {
             const container = document.getElementById('listaHistorico');
             const statsRecipes = document.getElementById('histTotalRecipes');
@@ -1252,7 +1252,6 @@
             const statsAvg = document.getElementById('histAvgCost');
             const containerCats = document.getElementById('historicoCategorias');
             
-            // Agrupar por mês
             const meses = {};
             receitasFeitas.forEach(r => {
                 const data = new Date(r.data);
@@ -1261,7 +1260,6 @@
                 meses[mesKey].push(r);
             });
             
-            // Popular select
             const select = document.getElementById('historyMonth');
             const currentValue = select.value;
             select.innerHTML = '<option value="">Selecionar mês...</option>';
@@ -1277,7 +1275,6 @@
             const mesSelecionado = select.value;
             const receitasDoMes = meses[mesSelecionado] || [];
             
-            // Estatísticas
             const totalRecipes = receitasDoMes.length;
             const totalSpent = receitasDoMes.reduce((a, r) => a + r.custoReal, 0);
             const totalPortions = receitasDoMes.reduce((a, r) => a + r.porcoesFeitas, 0);
@@ -1288,7 +1285,6 @@
             statsPortions.textContent = totalPortions;
             statsAvg.textContent = formatarMoeda(avgCost);
             
-            // Por categoria
             const custosCat = {};
             receitasDoMes.forEach(r => {
                 if (!custosCat[r.categoria]) custosCat[r.categoria] = 0;
@@ -1312,13 +1308,12 @@
                 `;
             }).join('') || '<p class="text-slate-500 text-center">Sem dados para este mês</p>';
             
-            // Lista detalhada
             container.innerHTML = receitasDoMes.map(r => {
                 const nome = idiomaAtual === 'pt' ? r.nome : (r.nomeEn || r.nome);
                 const data = new Date(r.data).toLocaleDateString('pt-PT');
                 
                 return `
-                <div class="glass-panel rounded-xl p-5 border border-slate-700/50 history-month">
+                <div class="glass-panel rounded-xl p-5 border-l-4 border-l-amber-400 border border-slate-700/50">
                     <div class="flex justify-between items-start mb-3">
                         <div>
                             <h4 class="font-bold text-white text-lg">${nome}</h4>
@@ -1334,12 +1329,6 @@
                         <div class="flex justify-between text-sm mb-1">
                             <span class="text-slate-400">Custo por porção:</span>
                             <span class="text-emerald-300 font-medium">${formatarMoeda(r.custoPorcaoReal)}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-slate-400">Planeado vs Real:</span>
-                            <span class="${r.custoPorcaoReal <= (r.custoReal/r.porcoesFeitas) ? 'text-emerald-400' : 'text-amber-400'}">
-                                ${formatarMoeda(r.ingredientes.reduce((a,b)=>a+b.preco,0)/r.porcoes)} → ${formatarMoeda(r.custoPorcaoReal)}
-                            </span>
                         </div>
                     </div>
                     
@@ -1366,6 +1355,7 @@
             lucide.createIcons();
         }
 
+        // ==================== DADOS (EXPORTAR/IMPORTAR) ====================
         function exportarDados() {
             const dados = {
                 versao: "2.0",
